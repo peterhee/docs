@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Windows.Forms;
+﻿using System.Text;
 
 namespace Coding_Conventions_Examples
 {
@@ -12,7 +7,7 @@ namespace Coding_Conventions_Examples
         //<snippet14a>
         public static Action<string> ActionExample1 = x => Console.WriteLine($"x is: {x}");
 
-        public static Action<string, string> ActionExample2 = (x, y) => 
+        public static Action<string, string> ActionExample2 = (x, y) =>
             Console.WriteLine($"x is: {x}, y is {y}");
 
         public static Func<string, int> FuncExample1 = x => Convert.ToInt32(x);
@@ -81,7 +76,7 @@ namespace Coding_Conventions_Examples
             //</snippet8>
 
             //<snippet9>
-            int var3 = Convert.ToInt32(Console.ReadLine()); 
+            int var3 = Convert.ToInt32(Console.ReadLine());
             int var4 = ExampleClass.ResultSoFar();
             //</snippet9>
 
@@ -117,13 +112,6 @@ namespace Coding_Conventions_Examples
             //<snippet13b>
             var vowels2 = new string[] { "a", "e", "i", "o", "u" };
             //</snippet13b>
-            //<snippet13c>
-            var vowels3 = new string[5];
-            vowels3[0] = "a";
-            vowels3[1] = "e";
-            // And so on.
-            //</snippet13c>
-
 
             //<snippet15a>
             ActionExample1("string for x");
@@ -194,7 +182,7 @@ namespace Coding_Conventions_Examples
             //<snippet19>
             var instance1 = new ExampleClass();
             //</snippet19>
-            // Can't show `ExampleClass instance1 = new()` because this projet targets net48.
+            // Can't show `ExampleClass instance1 = new()` because this project targets net48.
 
             //<snippet20>
             ExampleClass instance2 = new ExampleClass();
@@ -305,32 +293,32 @@ namespace Coding_Conventions_Examples
 
     class Name
     {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
     }
 
     class Distributor
     {
         public static int total;
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int ID { get; set; }
-        public string City { get; set; }
+        public string? City { get; set; }
     }
 
     class Customer
     {
         public static int total;
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int ID { get; set; }
-        public string City { get; set; }
+        public string? City { get; set; }
     }
 
     class ExampleClass
     {
         public static int totalInstances;
-        public string Name { get; set; }
+        public string? Name { get; set; }
         public int ID { get; set; }
-        public string Location { get; set; }
+        public string? Location { get; set; }
         public double Age { get; set; }
 
         public static int IncrementTotal()
@@ -370,8 +358,8 @@ namespace Coding_Conventions_Examples
         // The element type of the data source.
         public class Student
         {
-            public string LastName { get; set; }
-            public List<int> Scores { get; set; }
+            public string? LastName { get; set; }
+            public List<int>? Scores { get; set; }
         }
 
         static void Main()
@@ -390,7 +378,7 @@ namespace Coding_Conventions_Examples
 
             //<snippet30>
             var scoreQuery = from student in students
-                             from score in student.Scores
+                             from score in student.Scores!
                              where score > 90
                              select new { Last = student.LastName, score };
             //</snippet30>
@@ -440,7 +428,7 @@ namespace Coding_Conventions_WF2
             this.Click += new EventHandler(Form1_Click);
         }
 
-        void Form1_Click(object sender, EventArgs e)
+        void Form1_Click(object? sender, EventArgs e)
         {
             MessageBox.Show(((MouseEventArgs)e).Location.ToString());
         }

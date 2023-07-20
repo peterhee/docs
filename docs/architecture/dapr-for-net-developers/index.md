@@ -2,14 +2,14 @@
 title: Dapr for .NET Developers
 description: A guide for .NET developers to understand and leverage the full power of Microsoft's open source Distributed Application Runtime.
 author: robvet
-ms.date: 02/17/2021
+ms.date: 01/10/2022
 ---
 
 # Dapr for .NET Developers
 
 ![cover image](./media/cover.png)
 
-**EDITION v1.0**
+**EDITION v1.2**
 
 PUBLISHED BY
 
@@ -21,7 +21,7 @@ One Microsoft Way
 
 Redmond, Washington 98052-6399
 
-Copyright &copy; 2021 by Microsoft Corporation
+Copyright &copy; 2023 by Microsoft Corporation
 
 All rights reserved. No part of the contents of this book may be reproduced or transmitted in any form or by any means without the written permission of the publisher.
 
@@ -62,10 +62,12 @@ Editors:
 > **David Pine**, Senior Content Developer, .NET team, Microsoft
 >
 > **Maira Wenzel**, Senior Program Manager, .NET team, Microsoft
+>
+> **Steve "ardalis" Smith**, Senior Architect and Trainer, NimblePros
 
 ## Version
 
-This guide has been written to cover the **Dapr 1.0** version. .NET Core samples are based on **.NET Core 3.1**.
+This guide has been written to cover the **Dapr 1.9** version. .NET samples are based on **.NET 7**.
 
 ## Who should use this guide
 
@@ -77,9 +79,7 @@ A secondary audience is technical decision-makers who plan to choose whether to 
 
 This guide is available both in [PDF](https://aka.ms/dapr-ebook) form and online. Feel free to forward this document or links to its online version to your team to help ensure common understanding of these topics. Most of these topics benefit from a consistent understanding of the underlying principles and patterns, as well as the trade-offs involved in decisions related to these topics. Our goal with this document is to equip teams and their leaders with the information they need to make well-informed decisions for their applications' architecture, development, and hosting.
 
-## Send your feedback
-
-This book and related samples are constantly evolving, so your feedback is welcomed! If you have comments about how this book can be improved, use the feedback section at the bottom of any page built on [GitHub issues](https://github.com/dotnet/docs/issues).
+[!INCLUDE [feedback](../includes/feedback.md)]
 
 >[!div class="step-by-step"]
 >[Next](foreword.md)

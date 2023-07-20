@@ -346,7 +346,7 @@ private static void FindInDictionary2(string symbol)
 
 ## Using LINQ to Access a Collection
 
-LINQ (Language-Integrated Query) can be used to access collections. LINQ queries provide filtering, ordering, and grouping capabilities. For more information, see [Getting Started with LINQ in C#](linq/index.md).
+LINQ (Language-Integrated Query) can be used to access collections. LINQ queries provide filtering, ordering, and grouping capabilities. For more information, see [Getting Started with LINQ in C#](/dotnet/csharp/linq/).
 
 The following example runs a LINQ query against a generic `List`. The LINQ query returns a different collection that contains the results.
 
@@ -558,7 +558,7 @@ public class Color
 
 ## Iterators
 
-An *iterator* is used to perform a custom iteration over a collection. An iterator can be a method or a `get` accessor. An iterator uses a [yield return](../../language-reference/keywords/yield.md) statement to return each element of the collection one at a time.
+An *iterator* is used to perform a custom iteration over a collection. An iterator can be a method or a `get` accessor. An iterator uses a [yield return](../../language-reference/statements/yield.md) statement to return each element of the collection one at a time.
 
 You call an iterator by using a [foreach](../../language-reference/statements/iteration-statements.md#the-foreach-statement) statement. Each iteration of the `foreach` loop calls the iterator. When a `yield return` statement is reached in the iterator, an expression is returned, and the current location in code is retained. Execution is restarted from that location the next time that the iterator is called.
 
@@ -596,7 +596,7 @@ private static IEnumerable<int> EvenSequence(
 - [Object and Collection Initializers](../classes-and-structs/object-and-collection-initializers.md)
 - [Programming Concepts (C#)](./index.md)
 - [Option Strict Statement](../../../visual-basic/language-reference/statements/option-strict-statement.md)
-- [LINQ to Objects (C#)](./linq/linq-to-objects.md)
+- [LINQ to Objects (C#)](../../linq/query-a-collection-of-objects.md)
 - [Parallel LINQ (PLINQ)](../../../standard/parallel-programming/introduction-to-plinq.md)
 - [Collections and Data Structures](../../../standard/collections/index.md)
 - [Selecting a Collection Class](../../../standard/collections/selecting-a-collection-class.md)

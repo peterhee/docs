@@ -32,9 +32,9 @@ class CountWords
         //Convert the string into an array of words  
         string[] source = text.Split(new char[] { '.', '?', '!', ' ', ';', ':', ',' }, StringSplitOptions.RemoveEmptyEntries);  
   
-        // Create the query.  Use ToLowerInvariant to match "data" and "Data"
+        // Create the query.  Use the InvariantCultureIgnoreCase comparision to match "data" and "Data"
         var matchQuery = from word in source  
-                         where word.ToLowerInvariant() == searchTerm.ToLowerInvariant()  
+                         where word.Equals(searchTerm, StringComparison.InvariantCultureIgnoreCase)  
                          select word;  
   
         // Count the matches, which executes the query.  
@@ -55,6 +55,3 @@ class CountWords
 
  Create a C# console application project, with `using` directives for the System.Linq and System.IO namespaces.  
   
-## See also
-
-- [LINQ and Strings (C#)](./linq-and-strings.md)

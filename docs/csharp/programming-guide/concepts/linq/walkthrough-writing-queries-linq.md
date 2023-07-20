@@ -61,7 +61,7 @@ This walkthrough demonstrates the C# language features that are used to write LI
   
 #### To create a simple query  
   
-- In the application's `Main` method, create a simple query that, when it is executed, will produce a list of all students whose score on the first test was greater than 90. Note that because the whole `Student` object is selected, the type of the query is `IEnumerable<Student>`. Although the code could also use implicit typing by using the [var](../../../language-reference/keywords/var.md) keyword, explicit typing is used to clearly illustrate results. (For more information about `var`, see [Implicitly Typed Local Variables](../../classes-and-structs/implicitly-typed-local-variables.md).)  
+- In the application's `Main` method, create a simple query that, when it is executed, will produce a list of all students whose score on the first test was greater than 90. Note that because the whole `Student` object is selected, the type of the query is `IEnumerable<Student>`. Although the code could also use implicit typing by using the [var](../../../language-reference/statements/declarations.md#implicitly-typed-local-variables) keyword, explicit typing is used to clearly illustrate results. (For more information about `var`, see [Implicitly Typed Local Variables](../../classes-and-structs/implicitly-typed-local-variables.md).)  
   
      Note also that the query's range variable, `student`, serves as a reference to each `Student` in the source, providing member access for each object.  
   
@@ -135,7 +135,7 @@ This walkthrough demonstrates the C# language features that are used to write LI
   
      [!code-csharp[CsLINQGettingStarted#16](~/samples/snippets/csharp/VS_Snippets_VBCSharp/CsLINQGettingStarted/CS/Class1.cs#16)]  
   
-     For more information about [var](../../../language-reference/keywords/var.md), see [Implicitly Typed Local Variables](../../classes-and-structs/implicitly-typed-local-variables.md).  
+     For more information about [var](../../../language-reference/statements/declarations.md#implicitly-typed-local-variables), see [Implicitly Typed Local Variables](../../classes-and-structs/implicitly-typed-local-variables.md).  
   
 #### To order the groups by their key value  
   
@@ -155,7 +155,7 @@ This walkthrough demonstrates the C# language features that are used to write LI
   
 #### To use method syntax in a query expression  
   
-1. As described in [Query Syntax and Method Syntax in LINQ](./query-syntax-and-method-syntax-in-linq.md), some query operations can only be expressed by using method syntax. The following code calculates the total score for each `Student` in the source sequence, and then calls the `Average()` method on the results of that query to calculate the average score of the class.
+1. As described in [Query Syntax and Method Syntax in LINQ](../../../linq/write-linq-queries.md), some query operations can only be expressed by using method syntax. The following code calculates the total score for each `Student` in the source sequence, and then calls the `Average()` method on the results of that query to calculate the average score of the class.
   
      [!code-csharp[csLINQGettingStarted#19](~/samples/snippets/csharp/VS_Snippets_VBCSharp/CsLINQGettingStarted/CS/Class1.cs#19)]  
   
@@ -179,9 +179,9 @@ This walkthrough demonstrates the C# language features that are used to write LI
   
  [LINQ to XML (C#)](../../../../standard/linq/linq-xml-overview.md)  
   
- [LINQ to Objects (C#)](./linq-to-objects.md)  
+ [LINQ to Objects (C#)](../../../linq/query-a-collection-of-objects.md)  
   
 ## See also
 
-- [Language-Integrated Query (LINQ) (C#)](./index.md)
+- [Language-Integrated Query (LINQ) (C#)](/dotnet/csharp/linq/)
 - [LINQ Query Expressions](../../../linq/index.md)

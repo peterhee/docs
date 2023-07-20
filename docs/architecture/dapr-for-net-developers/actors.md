@@ -2,10 +2,12 @@
 title: The Dapr actors building block
 description: A deep dive into the Dapr actors building block and how to apply it
 author: amolenk
-ms.date: 06/26/2021
+ms.date: 11/17/2021
 ---
 
 # The Dapr actors building block
+
+[!INCLUDE [download-alert](includes/download-alert.md)]
 
 The actor model originated in 1973. It was proposed by Carl Hewitt as a conceptual model of concurrent computation, a form of computing in which several computations are executed at the same time. Highly parallel computers weren't yet available at that time, but the more recent advancements of multi-core CPUs and distributed systems have made the actor model popular.
 
@@ -130,7 +132,7 @@ public async Task<int> IncrementAsync()
 
 Actors can use timers and reminders to schedule calls to themselves. Both concepts support the configuration of a due time. The difference lies in the lifetime of the callback registrations:
 
-- Timers will only stay active as long as the the actor is activated. Timers *will not* reset the idle-timer, so they cannot keep an actor active on their own.
+- Timers will only stay active as long as the actor is activated. Timers *will not* reset the idle-timer, so they cannot keep an actor active on their own.
 - Reminders outlive actor activations. If an actor is deactivated, a reminder will re-activate the actor. Reminders *will* reset the idle-timer.
 
 Timers are registered by making a call to the actor API. In the following example, a timer is registered with a due time of 0 and a period of 10 seconds.
@@ -267,58 +269,43 @@ public async Task<int> GetScoreAsync()
 }
 ```
 
-To host actors in an ASP.NET Core service, you must add a reference to the [`Dapr.Actors.AspNetCore`](https://www.nuget.org/packages/Dapr.Actors.AspNetCore) package and make some changes to the `Startup` class. In the following example, the `Configure` method adds the actor endpoints by calling `endpoints.MapActorsHandlers`:
+To host actors in an ASP.NET Core service, you must add a reference to the [`Dapr.Actors.AspNetCore`](https://www.nuget.org/packages/Dapr.Actors.AspNetCore) package and make some changes in the `Program` file. In the following example, the call to `MapActorsHandlers` registers Dapr Actor endpoints in ASP.NET Core routing:
 
 ```csharp
-public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-{
-    // ...
-
-    // Actors building block does not support HTTPS redirection.
-    //app.UseHttpsRedirection();
-
-    app.UseEndpoints(endpoints =>
-    {
-        // Add actor endpoints.
-        endpoints.MapActorsHandlers();
-
-        endpoints.MapControllers();
-    });
-}
+var builder = WebApplication.CreateBuilder(args);
+var app = builder.Build();
+// Actors building block does not support HTTPS redirection.
+//app.UseHttpsRedirection();
+app.MapControllers();
+// Add actor endpoints.
+app.MapActorsHandlers();
 ```
 
 The actors endpoints are necessary because the Dapr sidecar calls the application to host and interact with actor instances.
 
 > [!IMPORTANT]
-> Make sure your `Startup` class does not contain an `app.UseHttpsRedirection` call to redirect clients to the HTTPS endpoint. This will not work with actors. By design, a Dapr sidecar sends requests over unencrypted HTTP by default. The HTTPS middleware will block these requests when enabled.
+> Make sure your `Program` (or `Startup`) class does not contain an `app.UseHttpsRedirection` call to redirect clients to the HTTPS endpoint. This will not work with actors. By design, a Dapr sidecar sends requests over unencrypted HTTP by default. The HTTPS middleware will block these requests when enabled.
 
-The `Startup` class is also the place to register the specific actor types. In the example below, `ConfigureServices` registers the `ScoreActor` using `services.AddActors`:
+The `Program` file is also the place to register the specific actor types. The following example registers the `ScoreActor` using the `AddActors` extension method:
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddActors(options =>
 {
-    // ...
-
-    services.AddActors(options =>
-    {
-        options.Actors.RegisterActor<ScoreActor>();
-    });
-}
+    options.Actors.RegisterActor<ScoreActor>();
+});
 ```
 
 At this point, the ASP.NET Core service is ready to host the `ScoreActor` and accept incoming requests. Client applications use actor proxies to invoke operations on actors. The following example shows how a console client application invokes the `IncrementScoreAsync` operation on a `ScoreActor` instance:
 
 ```csharp
-static async Task MainAsync(string[] args)
-{
-    var actorId = new ActorId("scoreActor1");
+var actorId = new ActorId("scoreActor1");
 
-    var proxy = ActorProxy.Create<IScoreActor>(actorId, "ScoreActor");
+var proxy = ActorProxy.Create<IScoreActor>(actorId, "ScoreActor");
 
-    var score = await proxy.IncrementScoreAsync();
+var score = await proxy.IncrementScoreAsync();
 
-    Console.WriteLine($"Current score: {score}");
-}
+Console.WriteLine($"Current score: {score}");
 ```
 
 The above example uses the [`Dapr.Actors`](https://www.nuget.org/packages/Dapr.Actors) package to call the actor service. To invoke an operation on an actor, you need to be able to address it. You'll need two parts for this:
@@ -332,25 +319,21 @@ The final step in the example calls the `IncrementScoreAsync` method on the acto
 
 ### Call actors from ASP.NET Core clients
 
-The console client example in the previous section uses the static `ActorProxy.Create` method directly to get an actor proxy instance. If the client application is an ASP.NET Core application, you should use the `IActorProxyFactory` interface to create actor proxies. The main benefit is that it allows you to manage configuration centrally in the `ConfigureServices` method. The `AddActors` method takes a delegate that allows you to specify actor runtime options, such as the HTTP endpoint of the Dapr sidecar. The following example specifies custom `JsonSerializerOptions` to use for actor state persistence and message deserialization:
+The console client example in the previous section uses the static `ActorProxy.Create` method directly to get an actor proxy instance. If the client application is an ASP.NET Core application, you should use the `IActorProxyFactory` interface to create actor proxies. The main benefit is that it allows you to manage configuration in one place. The `AddActors` extension method on `IServiceCollection` takes a delegate that allows you to specify actor runtime options, such as the HTTP endpoint of the Dapr sidecar. The following example specifies custom `JsonSerializerOptions` to use for actor state persistence and message deserialization:
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddActors(options =>
 {
-    // ...
-
-    services.AddActors(options =>
+    var jsonSerializerOptions = new JsonSerializerOptions()
     {
-        var jsonSerializerOptions = new JsonSerializerOptions()
-        {
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-            PropertyNameCaseInsensitive = true
-        };
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true
+    };
 
-        options.JsonSerializerOptions = jsonSerializerOptions;
-        options.Actors.RegisterActor<ScoreActor>();
-    });
-}
+    options.JsonSerializerOptions = jsonSerializerOptions;
+    options.Actors.RegisterActor<ScoreActor>();
+});
 ```
 
 The call to `AddActors` registers the `IActorProxyFactory` for .NET dependency injection. This allows ASP.NET Core to inject an `IActorProxyFactory` instance into your controller classes. The following example calls an actor method from an ASP.NET Core controller class:
@@ -601,7 +584,7 @@ if (violation > 0)
 
 The code above uses two external dependencies. The `_speedingViolationCalculator` encapsulates the business logic for determining whether or not a vehicle has driven too fast. The `_daprClient` allows the actor to publish messages using the Dapr pub/sub building block.
 
-Both dependencies are registered in the `Startup` class and injected into the actor using constructor dependency injection:
+Both dependencies are registered in the _Program.cs_ class and injected into the actor using constructor dependency injection:
 
 ```csharp
 private readonly DaprClient _daprClient;

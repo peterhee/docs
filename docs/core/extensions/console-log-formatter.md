@@ -1,9 +1,9 @@
 ---
 title: Console log formatting
-description: Learn how to use available console log formatting, or implement custom log formatting for your .NET applications.
+description: Learn how to use and implement custom console log formatting in your .NET apps. Register and create new log formatters for better application logging.
 author: IEvangelist
 ms.author: dapine
-ms.date: 07/14/2021
+ms.date: 06/23/2023
 ---
 
 # Console log formatting
@@ -38,7 +38,7 @@ The [`Console` logging provider](logging-providers.md#console) has several prede
 
 To use the `Simple` console formatter, register it with `AddSimpleConsole`:
 
-:::code language="csharp" source="snippets/logging/console-formatter-simple/Program.cs" highlight="11-16":::
+:::code language="csharp" source="snippets/logging/console-formatter-simple/Program.cs" highlight="5-10":::
 
 In the preceding sample source code, the <xref:Microsoft.Extensions.Logging.Console.ConsoleFormatterNames.Simple?displayProperty=nameWithType> formatter was registered. It provides logs with the ability to not only wrap information such as time and log level in each log message, but also allows for ANSI color embedding and indentation of messages.
 
@@ -52,7 +52,7 @@ The <xref:Microsoft.Extensions.Logging.Console.ConsoleFormatterNames.Systemd?dis
 
 This is commonly useful for containers, which often make use of `Systemd` console logging. With .NET 5, the `Simple` console logger also enables a compact version that logs in a single line, and also allows for disabling colors as shown in an earlier sample.
 
-:::code language="csharp" source="snippets/logging/console-formatter-systemd/Program.cs" highlight="11-15":::
+:::code language="csharp" source="snippets/logging/console-formatter-systemd/Program.cs" highlight="5-9":::
 
 ### Json
 
@@ -65,20 +65,37 @@ dotnet new webapp -o Console.ExampleFormatters.Json
 When running the app, using the template code, you get the default log format below:
 
 ```console
-info: Microsoft.Hosting.Lifetime[0]
+info: Console.ExampleFormatters.Json.Startup[0]
+      Hello .NET friends!
+info: Microsoft.Hosting.Lifetime[14]
       Now listening on: https://localhost:5001
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5000
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: .\snippets\logging\console-formatter-json
 ```
 
 By default, the `Simple` console log formatter is selected with default configuration. You change this by calling `AddJsonConsole` in the *Program.cs*:
 
-:::code language="csharp" source="snippets/logging/console-formatter-json/Program.cs" highlight="17-26":::
+:::code language="csharp" source="snippets/logging/console-formatter-json/Program.cs" highlight="5-13":::
+
+Alternatively, you can also configure this using logging configuration, such as that found in the _appsettings.json_ file:
+
+:::code language="json" source="snippets/logging/console-formatter-json/appsettings.json" highlight="14-23":::
 
 Run the app again, with the above change, the log message is now formatted as JSON:
 
-:::code language="json" source="snippets/logging/console-formatter-json/example-output.json":::
+:::code language="json" source="snippets/logging/console-formatter-json/example-output.txt":::
 
 > [!TIP]
 > The `Json` console formatter, by default, logs each message in a single line. In order to make it more readable while configuring the formatter, set <xref:System.Text.Json.JsonWriterOptions.Indented?displayProperty=nameWithType> to `true`.
+
+> [!CAUTION]
+> When using the Json console formatter, do not pass in log messages that have already been serialized as JSON. The logging infrastructure itself already manages the serialization of log messages, so if you're to pass in a log message that is already serialized&mdash;it will be double serialized, thus causing malformed output.
 
 ## Set formatter with configuration
 
@@ -103,7 +120,7 @@ To implement a custom formatter, you need to:
 
 Create an extension method to handle this for you:
 
-:::code language="csharp" source="snippets/logging/console-formatter-custom/ConsoleLoggerExtensions.cs" highlight="11-12":::
+:::code language="csharp" source="snippets/logging/console-formatter-custom/ConsoleLoggerExtensions.cs" highlight="10-11":::
 
 The `CustomOptions` are defined as follows:
 
@@ -117,11 +134,11 @@ The `AddConsoleFormatter` API:
 - Handles configuration:
   - Uses a change token to synchronize updates, based on the [options pattern](options.md), and the [IOptionsMonitor](xref:Microsoft.Extensions.Options.IOptionsMonitor%601) interface
 
-:::code language="csharp" source="snippets/logging/console-formatter-custom/Program.cs" highlight="11-12":::
+:::code language="csharp" source="snippets/logging/console-formatter-custom/Program.cs" highlight="6-7":::
 
 Define a `CustomerFormatter` subclass of `ConsoleFormatter`:
 
-:::code language="csharp" source="snippets/logging/console-formatter-custom/CustomFormatter.cs" highlight="24-45":::
+:::code language="csharp" source="snippets/logging/console-formatter-custom/CustomFormatter.cs" highlight="22-38":::
 
 The preceding `CustomFormatter.Write<TState>` API dictates what text gets wrapped around each log message. A standard `ConsoleFormatter` should be able to wrap around scopes, time stamps, and severity level of logs at a minimum. Additionally, you can encode ANSI colors in the log messages, and provide desired indentations as well. The implementation of the `CustomFormatter.Write<TState>` lacks these capabilities.
 
@@ -162,7 +179,7 @@ In the preceding formatter implementation:
 
 To use custom configuration options, with custom formatter implementations, add when calling <xref:Microsoft.Extensions.Hosting.HostingHostBuilderExtensions.ConfigureLogging(Microsoft.Extensions.Hosting.IHostBuilder,System.Action{Microsoft.Extensions.Hosting.HostBuilderContext,Microsoft.Extensions.Logging.ILoggingBuilder})>.
 
-:::code language="csharp" source="snippets/logging/console-formatter-custom-with-config/Program.cs" highlight="14-16":::
+:::code language="csharp" source="snippets/logging/console-formatter-custom-with-config/Program.cs" highlight="9-11":::
 
 The following console output is similar to what you might expect to see from using this `CustomTimePrefixingFormatter`.
 
@@ -185,7 +202,7 @@ Next, write some extension methods in a `TextWriterExtensions` class that allow 
 
 A custom color formatter that handles applying custom colors could be defined as follows:
 
-:::code language="csharp" source="snippets/logging/console-formatter-custom/CustomColorFormatter.cs" highlight="15-18,52-65":::
+:::code language="csharp" source="snippets/logging/console-formatter-custom/CustomColorFormatter.cs" highlight="13-16,50-63":::
 
 When you run the application, the logs will show the `CustomPrefix` message in the color green when `FormatterOptions.ColorBehavior` is `Enabled`.
 

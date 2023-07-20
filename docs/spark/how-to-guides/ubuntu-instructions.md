@@ -1,7 +1,7 @@
 ---
 title: Build a .NET for Apache Spark application on Ubuntu
 description: Learn how to build your .NET for Apache Spark application on Ubuntu
-ms.date: 10/09/2020
+ms.date: 12/16/2022
 ms.topic: conceptual
 ms.custom: mvc,how-to
 ---
@@ -10,6 +10,8 @@ ms.custom: mvc,how-to
 # Learn how to build your .NET for Apache Spark application on Ubuntu
 
 This article teaches you how to build your .NET for Apache Spark applications on Ubuntu.
+
+[!INCLUDE [.NET Core 3.1 Warning](../includes/net-core-31-spark.md)]
 
 ## Prerequisites
 
@@ -48,7 +50,7 @@ If you already have all of the following prerequisites, skip to the [build](#bui
       ```bash
       mkdir -p ~/bin/maven
       cd ~/bin/maven
-      wget https://www-us.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz
+      wget https://archive.apache.org/dist/maven/maven-3/3.6.0/binaries/apache-maven-3.6.0-bin.tar.gz
       tar -xvzf apache-maven-3.6.0-bin.tar.gz
       ln -s apache-maven-3.6.0 current
       export M2_HOME=~/bin/maven/current
@@ -134,7 +136,7 @@ You should see JARs created for the supported Spark versions:
 * `microsoft-spark-2-4\target\microsoft-spark-2-4_2.11-<spark-dotnet-version>.jar`
 * `microsoft-spark-3-0\target\microsoft-spark-3-0_2.12-<spark-dotnet-version>.jar`
 
-### Build .NET sample applications using .NET Core CLI
+### Build .NET sample applications using .NET CLI
 
 This section explains how to build the [sample applications](https://github.com/dotnet/spark/tree/main/examples) for .NET for Apache Spark. These steps will help in understanding the overall building process for any .NET for Spark application.
 

@@ -3,7 +3,7 @@ title: Create user-defined functions (UDF) in .NET for Apache Spark
 description: Learn how to implement user-defined functions (UDF) in .NET for Apache Spark applications.
 ms.author: nidutta
 author: Niharikadutta
-ms.date: 10/09/2020
+ms.date: 12/16/2022
 ms.topic: conceptual
 ms.custom: mvc,how-to
 ---
@@ -11,6 +11,8 @@ ms.custom: mvc,how-to
 # Create user-defined functions (UDF) in .NET for Apache Spark
 
 In this article, you learn how to use user-defined functions (UDF) in .NET for Apache Spark. [UDFs)](https://spark.apache.org/docs/latest/api/java/org/apache/spark/sql/expressions/UserDefinedFunction.html) are a Spark feature that allow you to use custom functions to extend the system's built-in functionality. UDFs transform values from a single row within a table to produce a single corresponding output value per row based on the logic defined in the UDF.
+
+[!INCLUDE [.NET Core 3.1 Warning](../includes/net-core-31-spark.md)]
 
 ## Define UDFs
 
@@ -115,7 +117,7 @@ public class C
 
 Both `func` and `func2` share the same closure `<>c__DisplayClass0_0`, which is the target that is serialized when serializing the delegates `func` and `func2`. Even though `Func<string, string> a` is only referencing `s1`, `s2` is also serialized when the bytes are sent to the workers.
 
-This can lead to some unexpected behaviors at runtime (like in the case of using [broadcast variables](broadcast-guide.md)), which is why we recommend that you restrict the visibility of the variables used in a function to that function's scope.
+This can lead to some unexpected behaviors at run time (like in the case of using [broadcast variables](broadcast-guide.md)), which is why we recommend that you restrict the visibility of the variables used in a function to that function's scope.
 
 The following code snippet is the recommended way to implement the desired serialization behavior:
 

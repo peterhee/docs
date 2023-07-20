@@ -1,11 +1,13 @@
 ---
 title: Routing differences between ASP.NET MVC and ASP.NET Core
-description: How is routing defined and how does it work at runtime in ASP.NET MVC? How does routing differ in ASP.NET Core apps?
+description: How is routing defined and how does it work at run time in ASP.NET MVC? How does routing differ in ASP.NET Core apps?
 author: ardalis
-ms.date: 11/13/2020
+ms.date: 12/10/2021
 ---
 
 # Routing differences between ASP.NET MVC and ASP.NET Core
+
+[!INCLUDE [download-alert](includes/download-alert.md)]
 
 Routing is responsible for mapping incoming browser requests to particular controller actions (or Razor Pages handlers). This section covers how routing differs between ASP.NET MVC (and Web API) and ASP.NET Core (MVC, Razor Pages, and otherwise).
 
@@ -120,9 +122,9 @@ public class ProductsController : ApiController
 
 Given the above controller, an HTTP GET request to `localhost:123/products/` matches the `GetAll` action. An HTTP GET request to `localhost:123/products?name=ardalis` matches the `FindProductsByName` action.
 
-## Routing in ASP.NET Core 3.1
+## Routing in .NET 7
 
-In ASP.NET Core, routing is handled by routing middleware, which matches the URLs of incoming requests to actions or other endpoints. Controller actions are either conventionally routed or attribute-routed. Conventional routing is similar to the route table approach used in ASP.NET MVC and Web API. Whether you're using conventional, attribute, or both, you need to configure your app to use the routing middleware. To use the middleware, add the following code to your `Startup.Configure` method:
+In ASP.NET Core, routing is handled by routing middleware, which matches the URLs of incoming requests to actions or other endpoints. Controller actions are either conventionally routed or attribute-routed. Conventional routing is similar to the route table approach used in ASP.NET MVC and Web API. Whether you're using conventional, attribute, or both, you need to configure your app to use the routing middleware. To use the middleware, add the following code to your _Program.cs_ file:
 
 ```csharp
 app.UseRouting();
@@ -133,7 +135,6 @@ app.UseRouting();
 With conventional routing, you set up one or more conventions that will be used to match incoming URLs to *endpoints* in the app. In ASP.NET Core, these endpoints may be controller actions, like in ASP.NET MVC or Web API. The endpoints could also be Razor Pages, Health Checks, or SignalR hubs. All of these routable features are configured in a similar fashion using endpoints:
 
 ```csharp
-// in Startup.Configure()
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapHealthChecks("/healthz").RequireAuthorization();

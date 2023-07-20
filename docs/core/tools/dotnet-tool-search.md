@@ -5,7 +5,7 @@ ms.date: 11/11/2020
 ---
 # dotnet tool search
 
-**This article applies to:** ✔️ .NET 5.0 SDK and later versions
+**This article applies to:** ✔️ .NET 5 SDK and later versions
 
 ## Name
 
@@ -27,8 +27,6 @@ The `dotnet tool search` command provides a way for you to search NuGet for tool
 The command uses the [NuGet Search API](/nuget/api/search-query-service-resource#search-for-packages). It filters on `packageType=dotnettool` to select only .NET tool packages.
 
 ## Options
-
-<!-- markdownlint-disable MD012 -->
 
 - **`--detail`**
 

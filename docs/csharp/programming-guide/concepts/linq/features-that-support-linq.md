@@ -1,6 +1,6 @@
 ---
 title: "C# Features That Support LINQ"
-description: Learn about C# features to use with LINQ queries and in other contexts. These language constructs were introduced in C# 3.0.
+description: Learn about C# features to use with LINQ queries and in other contexts.
 ms.date: 07/20/2015
 helpviewer_keywords:
   - "LINQ [C#], features supporting LINQ"
@@ -8,7 +8,7 @@ ms.assetid: 524b0078-ebfd-45a7-b390-f2ceb9d84797
 ---
 # C# Features That Support LINQ
 
-The following section introduces new language constructs introduced in C# 3.0. Although these new features are all used to a degree with LINQ queries, they are not limited to LINQ and can be used in any context where you find them useful.
+These new features are all used to a degree with LINQ queries, they are not limited to LINQ and can be used in any context where you find them useful.
 
 ## Query Expressions
 
@@ -25,7 +25,7 @@ For more information, see [LINQ Query Expressions](../../../linq/index.md).
 
 ## Implicitly Typed Variables (var)
 
-Instead of explicitly specifying a type when you declare and initialize a variable, you can use the [var](../../../language-reference/keywords/var.md) modifier to instruct the compiler to infer and assign the type, as shown here:
+Instead of explicitly specifying a type when you declare and initialize a variable, you can use the [var](../../../language-reference/statements/declarations.md#implicitly-typed-local-variables) modifier to instruct the compiler to infer and assign the type, as shown here:
 
 ```csharp
 var number = 5;
@@ -65,7 +65,7 @@ For more information, see:
 
 - [Object and Collection Initializers](../../classes-and-structs/object-and-collection-initializers.md)
 
-- [Query Expression Syntax for Standard Query Operators](./query-expression-syntax-for-standard-query-operators.md)
+- [Query Expression Syntax for Standard Query Operators](standard-query-operators-overview.md)
 
 ## Anonymous Types
 
@@ -85,16 +85,14 @@ For more information, see [Extension Methods](../../classes-and-structs/extensio
 
 ## Lambda Expressions
 
-A lambda expression is an inline function that uses the => operator to separate input parameters from the function body and can be converted at compile time to a delegate or an expression tree. In LINQ programming, you will encounter lambda expressions when you make direct method calls to the standard query operators.
+A lambda expression is an inline function that uses the `=>` operator to separate input parameters from the function body and can be converted at compile time to a delegate or an expression tree. In LINQ programming, you encounter lambda expressions when you make direct method calls to the standard query operators.
 
 For more information, see:
 
-- [Anonymous Functions](../../statements-expressions-operators/anonymous-functions.md)
-
 - [Lambda Expressions](../../../language-reference/operators/lambda-expressions.md)
 
-- [Expression Trees (C#)](../expression-trees/index.md)
+- [Expression Trees (C#)](../../../advanced-topics/expression-trees/index.md)
 
 ## See also
 
-- [Language-Integrated Query (LINQ) (C#)](./index.md)
+- [Language-Integrated Query (LINQ) (C#)](/dotnet/csharp/linq/)

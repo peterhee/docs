@@ -1,60 +1,66 @@
 ---
 title: .NET default templates for dotnet new
 description: The information about dotnet new templates shipped with dotnet SDK.
+ms.custom: updateeachrelease
 no-loc: [Blazor, WebAssembly]
-ms.date: 04/29/2021
+ms.date: 05/31/2023
 ---
 # .NET default templates for dotnet new
 
-When you install the [.NET SDK](https://dotnet.microsoft.com/download), you receive over a dozen built-in templates for creating projects and files, including console apps, class libraries, unit test projects, ASP.NET Core apps (including [Angular](https://angular.io/) and [React](https://reactjs.org/) projects), and configuration files. To list the built-in templates, run the `dotnet new` command with the `-l|--list` option:
+When you install the [.NET SDK](https://dotnet.microsoft.com/download), you receive over a dozen built-in templates for creating projects and files, including console apps, class libraries, unit test projects, ASP.NET Core apps (including [Angular](https://angular.io/) and [React](https://reactjs.org/) projects), and configuration files. To list the built-in templates, run the `dotnet new list` command:
 
 ```dotnetcli
-dotnet new --list
+dotnet new list
 ```
 
 The following table shows the templates that come pre-installed with the .NET SDK. The default language for the template is shown inside the brackets. Click on the short name link to see the specific template options.
 
-| Templates                                    | Short name                        | Language     | Tags                                  | Introduced |
-|----------------------------------------------|-----------------------------------|--------------|---------------------------------------|------------|
-| Console Application                          | [`console`](#console)             | [C#], F#, VB | Common/Console                        | 1.0        |
-| Class library                                | [`classlib`](#classlib)           | [C#], F#, VB | Common/Library                        | 1.0        |
-| WPF Application                              | [`wpf`](#wpf)                     | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB)|
-| WPF Class library                            | [`wpflib`](#wpf)                  | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB)|
-| WPF Custom Control Library                   | [`wpfcustomcontrollib`](#wpf)     | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB)|
-| WPF User Control Library                     | [`wpfusercontrollib`](#wpf)       | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB)|
-| Windows Forms (WinForms) Application         | [`winforms`](#winforms)           | [C#], VB     | Common/WinForms                       | 3.0 (5.0 for VB)|
-| Windows Forms (WinForms) Class library       | [`winformslib`](#winforms)        | [C#], VB     | Common/WinForms                       | 3.0 (5.0 for VB)|
-| Worker Service                               | [`worker`](#web-others)           | [C#]         | Common/Worker/Web                     | 3.0        |
-| Unit Test Project                            | [`mstest`](#test)                 | [C#], F#, VB | Test/MSTest                           | 1.0        |
-| NUnit 3 Test Project                         | [`nunit`](#nunit)                 | [C#], F#, VB | Test/NUnit                            | 2.1.400    |
-| NUnit 3 Test Item                            | `nunit-test`                      | [C#], F#, VB | Test/NUnit                            | 2.2        |
-| xUnit Test Project                           | [`xunit`](#test)                  | [C#], F#, VB | Test/xUnit                            | 1.0        |
-| Razor Component                              | `razorcomponent`                  | [C#]         | Web/ASP.NET                           | 3.0        |
-| Razor Page                                   | [`page`](#page)                   | [C#]         | Web/ASP.NET                           | 2.0        |
-| MVC ViewImports                              | [`viewimports`](#namespace)       | [C#]         | Web/ASP.NET                           | 2.0        |
-| MVC ViewStart                                | `viewstart`                       | [C#]         | Web/ASP.NET                           | 2.0        |
-| Blazor Server App                            | [`blazorserver`](#blazorserver)   | [C#]         | Web/Blazor                            | 3.0        |
-| Blazor WebAssembly App                       | [`blazorwasm`](#blazorwasm)       | [C#]         | Web/Blazor/WebAssembly                | 3.1.300    |
-| ASP.NET Core Empty                           | [`web`](#web)                     | [C#], F#     | Web/Empty                             | 1.0        |
-| ASP.NET Core Web App (Model-View-Controller) | [`mvc`](#web-options)             | [C#], F#     | Web/MVC                               | 1.0        |
-| ASP.NET Core Web App                         | [`webapp, razor`](#web-options)   | [C#]         | Web/MVC/Razor Pages                   | 2.2, 2.0   |
-| ASP.NET Core with Angular                    | [`angular`](#spa)                 | [C#]         | Web/MVC/SPA                           | 2.0        |
-| ASP.NET Core with React.js                   | [`react`](#spa)                   | [C#]         | Web/MVC/SPA                           | 2.0        |
-| ASP.NET Core with React.js and Redux         | [`reactredux`](#reactredux)       | [C#]         | Web/MVC/SPA                           | 2.0        |
-| Razor Class Library                          | [`razorclasslib`](#razorclasslib) | [C#]         | Web/Razor/Library/Razor Class Library | 2.1        |
-| ASP.NET Core Web API                         | [`webapi`](#webapi)               | [C#], F#     | Web/WebAPI                            | 1.0        |
-| ASP.NET Core gRPC Service                    | [`grpc`](#web-others)             | [C#]         | Web/gRPC                              | 3.0        |
-| dotnet gitignore file                        | `gitignore`                       |              | Config                                | 3.0        |
-| global.json file                             | [`globaljson`](#globaljson)       |              | Config                                | 2.0        |
-| NuGet Config                                 | `nugetconfig`                     |              | Config                                | 1.0        |
-| Dotnet local tool manifest file              | `tool-manifest`                   |              | Config                                | 3.0        |
-| Web Config                                   | `webconfig`                       |              | Config                                | 1.0        |
-| Solution File                                | `sln`                             |              | Solution                              | 1.0        |
-| Protocol Buffer File                         | [`proto`](#namespace)             |              | Web/gRPC                              | 3.0        |
+| Templates                                    | Short name                            | Language     | Tags                                  | Introduced       |
+|----------------------------------------------|---------------------------------------|--------------|---------------------------------------|------------------|
+| Console Application                          | [`console`](#console)                 | [C#], F#, VB | Common/Console                        | 1.0              |
+| Class library                                | [`classlib`](#classlib)               | [C#], F#, VB | Common/Library                        | 1.0              |
+| WPF Application                              | [`wpf`](#wpf)                         | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB) |
+| WPF Class library                            | [`wpflib`](#wpf)                      | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB) |
+| WPF Custom Control Library                   | [`wpfcustomcontrollib`](#wpf)         | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB) |
+| WPF User Control Library                     | [`wpfusercontrollib`](#wpf)           | [C#], VB     | Common/WPF                            | 3.0 (5.0 for VB) |
+| Windows Forms (WinForms) Application         | [`winforms`](#winforms)               | [C#], VB     | Common/WinForms                       | 3.0 (5.0 for VB) |
+| Windows Forms (WinForms) Class library       | [`winformslib`](#winforms)            | [C#], VB     | Common/WinForms                       | 3.0 (5.0 for VB) |
+| Worker Service                               | [`worker`](#web-others)               | [C#]         | Common/Worker/Web                     | 3.0              |
+| Unit Test Project                            | [`mstest`](#test)                     | [C#], F#, VB | Test/MSTest                           | 1.0              |
+| NUnit 3 Test Project                         | [`nunit`](#nunit)                     | [C#], F#, VB | Test/NUnit                            | 2.1.400          |
+| NUnit 3 Test Item                            | `nunit-test`                          | [C#], F#, VB | Test/NUnit                            | 2.2              |
+| xUnit Test Project                           | [`xunit`](#test)                      | [C#], F#, VB | Test/xUnit                            | 1.0              |
+| Razor Component                              | `razorcomponent`                      | [C#]         | Web/ASP.NET                           | 3.0              |
+| Razor Page                                   | [`page`](#page)                       | [C#]         | Web/ASP.NET                           | 2.0              |
+| MVC ViewImports                              | [`viewimports`](#namespace)           | [C#]         | Web/ASP.NET                           | 2.0              |
+| MVC ViewStart                                | `viewstart`                           | [C#]         | Web/ASP.NET                           | 2.0              |
+| Blazor Server App                            | [`blazorserver`](#blazorserver)       | [C#]         | Web/Blazor                            | 3.0              |
+| Blazor Server App Empty                      | [`blazorserver-empty`](#blazorserver) | [C#]         | Web/Blazor                            | 7.0              |
+| Blazor WebAssembly App                       | [`blazorwasm`](#blazorwasm)           | [C#]         | Web/Blazor/WebAssembly                | 3.1.300          |
+| Blazor WebAssembly App Empty                 | [`blazorwasm-empty`](#blazorwasm)     | [C#]         | Web/Blazor/WebAssembly                | 7.0              |
+| ASP.NET Core Empty                           | [`web`](#web)                         | [C#], F#     | Web/Empty                             | 1.0              |
+| ASP.NET Core Web App (Model-View-Controller) | [`mvc`](#web-options)                 | [C#], F#     | Web/MVC                               | 1.0              |
+| ASP.NET Core Web App                         | [`webapp, razor`](#web-options)       | [C#]         | Web/MVC/Razor Pages                   | 2.2, 2.0         |
+| ASP.NET Core with Angular                    | [`angular`](#spa)                     | [C#]         | Web/MVC/SPA                           | 2.0              |
+| ASP.NET Core with React.js                   | [`react`](#spa)                       | [C#]         | Web/MVC/SPA                           | 2.0              |
+| Razor Class Library                          | [`razorclasslib`](#razorclasslib)     | [C#]         | Web/Razor/Library/Razor Class Library | 2.1              |
+| ASP.NET Core Web API                         | [`webapi`](#webapi)                   | [C#], F#     | Web/WebAPI                            | 1.0              |
+| ASP.NET Core API                             | [`api`](#api)                         | [C#]         | Web/API                               | 8.0              |
+| ASP.NET Core gRPC Service                    | [`grpc`](#web-others)                 | [C#]         | Web/gRPC                              | 3.0              |
+| dotnet gitignore file                        | `gitignore`                           |              | Config                                | 3.0              |
+| global.json file                             | [`globaljson`](#globaljson)           |              | Config                                | 2.0              |
+| NuGet Config                                 | `nugetconfig`                         |              | Config                                | 1.0              |
+| Dotnet local tool manifest file              | `tool-manifest`                       |              | Config                                | 3.0              |
+| Web Config                                   | `webconfig`                           |              | Config                                | 1.0              |
+| Solution File                                | `sln`                                 |              | Solution                              | 1.0              |
+| Protocol Buffer File                         | [`proto`](#namespace)                 |              | Web/gRPC                              | 3.0              |
+| EditorConfig file                            | `editorconfig`(#editorconfig)         |              | Config                                | 6.0              |
 
 ## Template options
 
-Each template may have additional options available. The core templates have the following additional options:
+Each template may have additional options available. To show the additional options available for the template use the `--help` option with the template name argument, for example: `dotnet new console --help`.
+In case the template supports multiple languages, this command will show help for the template in the default language. By combining it with the `--language` option, you can see the help for other languages: `dotnet new console --help --language F#`.
+The templates that ship with the .NET SDK have the following additional options:
 
 ## `console`
 
@@ -62,13 +68,17 @@ Each template may have additional options available. The core templates have the
 
   Specifies the [framework](../../standard/frameworks.md) to target. Available since .NET Core 3.0 SDK.
 
-  The following table lists the default values according to the SDK version number you're using:
+  The following table lists the default values according to the SDK version you're using:
 
   | SDK version | Default value   |
   |-------------|-----------------|
-  | 5.0         | `net5.0`        |
+  | 7.0         | `net7.0`        |
+  | 6.0         | `net6.0`        |
   | 3.1         | `netcoreapp3.1` |
-  | 3.0         | `netcoreapp3.0` |
+
+  The ability to create a project for an earlier TFM depends on having that version of the SDK installed. For example, if you have only the .NET 7 SDK installed, then the only value available for `--framework` is `net7.0`. If you install the .NET 6 SDK the value `net6.0` becomes available for `--framework`. If you install the .NET Core 3.1 SDK, `netcoreapp3.1` becomes available, and so on. So by specifying `--framework netcoreapp3.1` you can target .NET Core 3.1 even while running `dotnet new` in the .NET 6 SDK.
+
+  Alternatively, to create a project that targets a framework earlier than the SDK that you're using, you might be able to do it by installing the NuGet package for the template. [Common](https://www.nuget.org/packages?q=Microsoft.DotNet.Common.ProjectTemplates), [web](https://www.nuget.org/packages?q=Microsoft.DotNet.Web.ProjectTemplates), and [SPA](https://www.nuget.org/packages?q=Microsoft.DotNet.Web.Spa.ProjectTemplates) project types use different packages per target framework moniker (TFM). For example, to create a `console` project that targets `netcoreapp1.0`, run [`dotnet new install`](dotnet-new-install.md) on `Microsoft.DotNet.Common.ProjectTemplates.1.x`.
 
 - **`--langVersion <VERSION_NUMBER>`**
 
@@ -80,13 +90,19 @@ Each template may have additional options available. The core templates have the
 
   If specified, doesn't execute an implicit restore during project creation. Available since .NET Core 2.2 SDK.
 
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`. Available only for C#.
+
 ***
 
 ## `classlib`
 
 - **`-f|--framework <FRAMEWORK>`**
 
-  Specifies the [framework](../../standard/frameworks.md) to target. Values: `net5.0` or `netcoreapp<version>` to create a .NET Class Library or `netstandard<version>` to create a .NET Standard Class Library. The default value for .NET 5.0 SDK is `net5.0`.
+  Specifies the [framework](../../standard/frameworks.md) to target. Values: `net7.0`, `net6.0`, or `netcoreapp3.1` to create a .NET Class Library or `netstandard2.1` or `netstandard2.0` to create a .NET Standard Class Library. The default value for .NET SDK 7.0.x is `net7.0`.
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
 
 - **`--langVersion <VERSION_NUMBER>`**
 
@@ -104,7 +120,7 @@ Each template may have additional options available. The core templates have the
 
 - **`-f|--framework <FRAMEWORK>`**
 
-  Specifies the [framework](../../standard/frameworks.md) to target. The default value is `net5.0`. Available since .NET Core 3.1 SDK.
+  Specifies the [framework](../../standard/frameworks.md) to target. For the .NET 6 SDK, the default value is `net6.0`. Available since .NET Core 3.1 SDK.
 
 - **`--langVersion <VERSION_NUMBER>`**
 
@@ -136,7 +152,9 @@ Each template may have additional options available. The core templates have the
 
 - **`-f|--framework <FRAMEWORK>`**
 
-  Specifies the [framework](../../standard/frameworks.md) to target. The default value is `netcoreapp3.1`. Available since .NET Core 3.1 SDK.
+  Specifies the [framework](../../standard/frameworks.md) to target. The default value for .NET 7 SDK is `net7.0`. Available since .NET Core 3.1 SDK.
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
 
 - **`--exclude-launch-settings`**
 
@@ -145,6 +163,10 @@ Each template may have additional options available. The core templates have the
 - **`--no-restore`**
 
   Doesn't execute an implicit restore during project creation.
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
 
 ***
 
@@ -158,9 +180,11 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
-  | 3.0         | `netcoreapp3.0` |
+
+The ability to create a project for an earlier TFM depends on having that version of the SDK installed. For example, if you have only the .NET 6 SDK installed, then the only value available for `--framework` is `net6.0`. If you install the .NET 5 SDK, the value `net5.0` becomes available for `--framework`. If you install the .NET Core 3.1 SDK, `netcoreapp3.1` becomes available, and so on. So by specifying `--framework netcoreapp3.1` you can target .NET Core 3.1 even while running `dotnet new` in the .NET 6 SDK.
 
 - **`-p|--enable-pack`**
 
@@ -182,11 +206,11 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
-  | 3.0         | `netcoreapp3.0` |
-  | 2.2         | `netcoreapp2.2` |
-  | 2.1         | `netcoreapp2.1` |
+  
+The ability to create a project for an earlier TFM depends on having that version of the SDK installed. For example, if you have only the .NET 6 SDK installed, then the only value available for `--framework` is `net6.0`. If you install the .NET 5 SDK, the value `net5.0` becomes available for `--framework`. If you install the .NET Core 3.1 SDK, `netcoreapp3.1` becomes available, and so on. So by specifying `--framework netcoreapp3.1` you can target .NET Core 3.1 even while running `dotnet new` in the .NET 6 SDK.
 
 - **`-p|--enable-pack`**
 
@@ -287,6 +311,18 @@ Each template may have additional options available. The core templates have the
 
   Doesn't execute an implicit restore during project creation.
 
+- **`--kestrelHttpPort`**
+
+  Port number to use for the HTTP endpoint in *launchSettings.json*.
+
+- **`--kestrelHttpsPort`**
+
+  Port number to use for the HTTPS endpoint in *launchSettings.json*. This option is not applicable when the parameter `no-https` is used (but `no-https` is ignored when an individual or organizational authentication setting is chosen for `--auth`).
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
+
 ***
 
 ## `blazorwasm`
@@ -299,8 +335,12 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 7.0         | `net7.0`        |
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
 
 - **`--no-restore`**
 
@@ -391,6 +431,18 @@ Each template may have additional options available. The core templates have the
 
   Scopes to request to call the API from the web app. Only applies to `SingleOrg` or `IndividualB2C` authentication without an ASP.NET Core host specified. The default is `user.read`.
 
+- **`--kestrelHttpPort`**
+
+  Port number to use for the HTTP endpoint in *launchSettings.json*.
+
+- **`--kestrelHttpsPort`**
+
+  Port number to use for the HTTPS endpoint in *launchSettings.json*. This option is not applicable when the parameter `no-https` is used (but `no-https` is ignored when an individual or organizational authentication setting is chosen for `--auth`).
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
+
 ***
 
 ## `web`
@@ -407,10 +459,13 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
   | 3.0         | `netcoreapp3.0` |
   | 2.1         | `netcoreapp2.1` |
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
 
 - **`--no-restore`**
 
@@ -419,6 +474,18 @@ Each template may have additional options available. The core templates have the
 - **`--no-https`**
 
   Turns off HTTPS.
+
+- **`--kestrelHttpPort`**
+
+  Port number to use for the HTTP endpoint in *launchSettings.json*.
+
+- **`--kestrelHttpsPort`**
+
+  Port number to use for the HTTPS endpoint in *launchSettings.json*. This option is not applicable when the parameter `no-https` is used (but `no-https` is ignored when an individual or organizational authentication setting is chosen for `--auth`).
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
 
 ***
 
@@ -495,9 +562,12 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
   | 3.0         | `netcoreapp3.0` |
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
 
 - **`--no-restore`**
 
@@ -511,6 +581,18 @@ Each template may have additional options available. The core templates have the
 
   Determines if the project is configured to use [Razor runtime compilation](/aspnet/core/mvc/views/view-compilation#runtime-compilation) in Debug builds. Option available since .NET Core 3.1.201 SDK.
 
+- **`--kestrelHttpPort`**
+
+  Port number to use for the HTTP endpoint in *launchSettings.json*.
+
+- **`--kestrelHttpsPort`**
+
+  Port number to use for the HTTPS endpoint in *launchSettings.json*. This option is not applicable when the parameter `no-https` is used (but `no-https` is ignored when an individual or organizational authentication setting is chosen for `--auth`).
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
+
 ***
 
 ## <a name="spa"></a> `angular`, `react`
@@ -518,7 +600,7 @@ Each template may have additional options available. The core templates have the
 - **`-au|--auth <AUTHENTICATION_TYPE>`**
 
   The type of authentication to use. Available since .NET Core 3.0 SDK.
-  
+
   The possible values are:
 
   - `None` - No authentication (Default).
@@ -548,10 +630,25 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
   | 3.0         | `netcoreapp3.0` |
   | 2.1         | `netcoreapp2.0` |
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
+
+- **`--kestrelHttpPort`**
+
+  Port number to use for the HTTP endpoint in *launchSettings.json*.
+
+- **`--kestrelHttpsPort`**
+
+  Port number to use for the HTTPS endpoint in *launchSettings.json*. This option is not applicable when the parameter `no-https` is used (but `no-https` is ignored when an individual or organizational authentication setting is chosen for `--auth`).
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
 
 ***
 
@@ -569,10 +666,13 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
   | 3.0         | `netcoreapp3.0` |
   | 2.1         | `netcoreapp2.0` |
+
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
 
 - **`--no-restore`**
 
@@ -581,6 +681,14 @@ Each template may have additional options available. The core templates have the
 - **`--no-https`**
 
   Turns off HTTPS.
+
+- **`--kestrelHttpPort`**
+
+  Port number to use for the HTTP endpoint in *launchSettings.json*.
+
+- **`--kestrelHttpsPort`**
+
+  Port number to use for the HTTPS endpoint in *launchSettings.json*. This option is not applicable when the parameter `no-https` is used (but `no-https` is ignored when an individual or organizational authentication setting is chosen for `--auth`).
 
 ***
 
@@ -595,7 +703,37 @@ Each template may have additional options available. The core templates have the
   Supports adding traditional Razor pages and Views in addition to components to this library. Available since .NET Core 3.0 SDK.
 
 ***
-  
+
+## `api`
+
+- **`--aot`**
+
+  Enable publish using AOT. For more information, see [Native AOT deployment](/dotnet/core/deploying/native-aot) and [The API template](/aspnet/core/fundamentals/native-aot#the-api-template).
+
+- **`--exclude-launch-settings`**
+
+  Excludes *launchSettings.json* from the generated template.
+
+- **`-f|--framework <FRAMEWORK>`**
+
+  Specifies the [framework](../../standard/frameworks.md) to target.
+
+  The following table lists the default values according to the SDK version number you're using:
+
+  | SDK version | Default value   |
+  |-------------|-----------------|
+  | 8.0         | `net8.0`        |
+
+- **`--no-restore`**
+
+  Doesn't execute an implicit restore during project creation.
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
+
+***
+
 ## `webapi`
 
 - **`-au|--auth <AUTHENTICATION_TYPE>`**
@@ -610,6 +748,10 @@ Each template may have additional options available. The core templates have the
 - **`--aad-b2c-instance <INSTANCE>`**
 
   The Azure Active Directory B2C instance to connect to. Use with `IndividualB2C` authentication. The default value is `https://login.microsoftonline.com/tfp/`.
+
+- **`-minimal|--use-minimal-apis`**
+
+  Create a project that uses the [ASP.NET Core minimal API](/aspnet/core/fundamentals/minimal-apis).
 
 - **`-ssp|--susi-policy-id <ID>`**
 
@@ -639,9 +781,13 @@ Each template may have additional options available. The core templates have the
 
   Excludes *launchSettings.json* from the generated template.
 
+- **`--no-openapi`**
+
+  Turns off OpenAPI (Swagger) support. `AddSwaggerGen`, `UseSwagger`, and `UseSwaggerUI` aren't called.
+
 - **`--no-https`**
 
-  Turns off HTTPS. `app.UseHsts` and `app.UseHttpsRedirection` aren't added to `Startup.Configure`. This option only applies if `IndividualB2C` or `SingleOrg` aren't being used for authentication.
+  Turns off HTTPS. No *https* launch profile is created in `launchSettings.json`. `app.UseHsts` and `app.UseHttpsRedirection` aren't called in *Program.cs*/*Startup.cs*. This option only applies if `IndividualB2C` or `SingleOrg` aren't being used for authentication.
 
 - **`-uld|--use-local-db`**
 
@@ -655,14 +801,22 @@ Each template may have additional options available. The core templates have the
 
   | SDK version | Default value   |
   |-------------|-----------------|
+  | 7.0         | `net7.0`        |
+  | 6.0         | `net6.0`        |
   | 5.0         | `net5.0`        |
   | 3.1         | `netcoreapp3.1` |
   | 3.0         | `netcoreapp3.0` |
   | 2.1         | `netcoreapp2.1` |
 
+  To create a project that targets a framework earlier than the SDK that you're using, see [`--framework` for `console` projects](#template-options) earlier in this article.
+
 - **`--no-restore`**
 
   Doesn't execute an implicit restore during project creation.
+
+- **`--use-program-main`**
+
+  If specified, an explicit `Program` class and `Main` method will be used instead of top-level statements. Available since .NET SDK 6.0.300. Default value: `false`.
 
 ***
 
@@ -672,9 +826,18 @@ Each template may have additional options available. The core templates have the
 
   Specifies the version of the .NET SDK to use in the *global.json* file.
 
+## `editorconfig`
+
+Creates an *.editorconfig* file for configuring code style preferences.
+
+- **`--empty`**
+
+  Creates an empty *.editorconfig* instead of the defaults for .NET.
+
 ## See also
 
 - [dotnet new command](dotnet-new.md)
-- [dotnet new --list option](dotnet-new-list.md)
+- [dotnet new list command](dotnet-new-list.md)
 - [Custom templates for dotnet new](custom-templates.md)
 - [Create a custom template for dotnet new](../tutorials/cli-templates-create-item-template.md)
+- [Implicit using directives](../project-sdk/overview.md#implicit-using-directives)

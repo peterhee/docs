@@ -1,7 +1,8 @@
 ---
 title: Test a .NET class library using Visual Studio
 description: Learn how to use Visual Studio to create and run a unit test project for a .NET class library.
-ms.date: 11/18/2020
+ms.date: 11/11/2022
+zone_pivot_groups: dotnet-version
 dev_langs:
   - "csharp"
   - "vb"
@@ -9,6 +10,8 @@ ms.custom: "vs-dotnet"
 recommendations: false
 ---
 # Tutorial: Test a .NET class library with .NET using Visual Studio
+
+::: zone pivot="dotnet-7-0,dotnet-6-0"
 
 This tutorial shows how to automate unit testing by adding a test project to a solution.
 
@@ -34,7 +37,7 @@ Unit tests provide automated software testing during your development and publis
 
    1. On the **Configure your new project** page, enter **StringLibraryTest** in the **Project name** box. Then choose **Next**.
 
-   1. On the **Additional information** page, select **.NET 5.0 (Current)** in the **Target Framework** box. Then choose **Create**.
+   1. On the **Additional information** page, select **.NET 7 (Standard-term support)** in the **Framework** box. Then choose **Create**.
 
 1. Visual Studio creates the project and opens the class file in the code window with the following code. If the language you want to use is not shown, change the language selector at the top of the page.
 
@@ -182,7 +185,7 @@ To test the Release build:
    > [!div class="mx-imgBorder"]
    > :::image type="content" source="./media/testing-library-with-visual-studio/build-library-context-menu.png" alt-text="StringLibrary context menu with build command":::
 
-1. Run the unit tests by choosing **Test Run** > **All Tests** from the menu bar. The tests pass.
+1. Run the unit tests by choosing **Test** > **Run All Tests** from the menu bar. The tests pass.
 
 ## Debug tests
 
@@ -192,8 +195,8 @@ Visual Studio starts the test project with the debugger attached. Execution will
 
 ## Additional resources
 
-* [Unit test basics - Visual Studio](/visualstudio/test/unit-test-basics)
-* [Unit testing in .NET](../testing/index.md)
+- [Unit test basics - Visual Studio](/visualstudio/test/unit-test-basics)
+- [Unit testing in .NET](../testing/index.md)
 
 ## Next steps
 
@@ -211,3 +214,5 @@ A library doesn't have to be distributed as a package. It can be bundled with a 
 
 > [!div class="nextstepaction"]
 > [Publish a .NET console application using Visual Studio](publishing-with-visual-studio.md)
+
+::: zone-end

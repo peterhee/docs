@@ -2,9 +2,11 @@
 title: DevOps with .NET and GitHub Actions - Build a .NET Web App
 description: Start your journey of DevOps with .NET and GitHub Actions by building a .NET web app
 author: colindembovsky
-ms.date: 03/04/2021
+ms.date: 10/05/2021
 ---
 # Build a .NET web app using GitHub Actions
+
+[!INCLUDE [download-alert](includes/download-alert.md)]
 
 [GitHub Actions](https://github.com/features/actions) allow you to automate workflows in response to events that are triggered in GitHub. A common workflow is Continuous Integration (CI), but Actions can automate other processes. For example, sending welcome emails when people join a repository.
 
@@ -34,6 +36,18 @@ The `steps` node can be as easy as inline commands, or they can be actions. Most
 
 > [!TIP]
 > For more information, see [GitHub Actions YAML syntax](https://docs.github.com/actions/reference/workflow-syntax-for-github-actions).
+
+From a workflow file, you're able to `run` any of the available [.NET CLI commands](../../core/tools/index.md). For example, if you're required to build, test, and deploy an ASP.NET Core Blazor WebAssembly app with Ahead-of-Time (AoT) compilation, you'd use the following commands:
+
+- [dotnet workload install](../../core/tools/dotnet-workload-install.md)
+- [dotnet restore](../../core/tools/dotnet-restore.md)
+- [dotnet build](../../core/tools/dotnet-build.md)
+- [dotnet test](../../core/tools/dotnet-test.md)
+- [dotnet publish](../../core/tools/dotnet-publish.md)
+
+### The .NET SDK is a workflow necessity
+
+All .NET workflows require the .NET SDK, and this can be set up by the [`actions/setup-dotnet` GitHub Action](https://github.com/actions/setup-dotnet). This action sets up a [.NET CLI](../../core/tools/index.md) environment for use in actions. Some [GitHub hosted runners](https://docs.github.com/actions/using-github-hosted-runners/about-github-hosted-runners#supported-software) have the .NET SDK preinstalled, but that's subject to change. As a best practice, use the `actions/setup-dotnet` action to ensure the proper version is available.
 
 ## Create a basic build workflow
 
@@ -86,11 +100,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -105,8 +119,8 @@ Notice the following things:
 1. The `on` object specifies when this workflow should run. This workflow has two events that trigger it: `push` to `main` and `pull_request` to `main`. Each time someone commits to `main` or creates a pull request (PR) to `main`, this workflow will execute.
 1. There's a single `job` called `build`. This build should run on a hosted agent. `ubuntu_latest` specifies the most recent Ubuntu hosted agent.
 1. There are five steps:
-    1. `actions/checkout@v2` is an action that checks out the code in the repository onto the runner.
-    1. `actions/setup-dotnet@v1` is an action that sets up the .NET CLI. This step also specifies a `name` attribute for the logs and the `dotnet-version` parameter within the `with` object.
+    1. `actions/checkout@v3` is an action that checks out the code in the repository onto the runner.
+    1. `actions/setup-dotnet@v3` is an action that sets up the .NET CLI. This step also specifies a `name` attribute for the logs and the `dotnet-version` parameter within the `with` object.
     1. Three `run` steps that execute `dotnet restore`, `dotnet build`, and `dotnet test`. `name` attributes are also specified for these `run` steps to make the logs look pretty.
 
 ## Publish the output
@@ -146,7 +160,7 @@ Now that you've successfully built and tested the code, add steps that publish t
 
     ```yml
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v2.2.2
+        uses: actions/upload-artifact@v3
         with:
           name: website
           path: SimpleFeedReader/website/**
@@ -179,11 +193,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: Setup .NET
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 5.0.x
+        dotnet-version: 6.0.x
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
@@ -193,7 +207,7 @@ jobs:
     - name: Publish
       run: dotnet publish SimpleFeedReader/SimpleFeedReader.csproj -c Release -o website
     - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v2.2.2
+      uses: actions/upload-artifact@v3
       with:
         name: website
         path: SimpleFeedReader/website/**

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Snippets
+﻿namespace Snippets
 {
     // <ConsoleExtract>
     public class Console
@@ -18,11 +15,11 @@ namespace TourOfCsharp
     // <ColorClassDefinition>
     public class Color
     {
-        public static readonly Color Black = new Color(0, 0, 0);
-        public static readonly Color White = new Color(255, 255, 255);
-        public static readonly Color Red = new Color(255, 0, 0);
-        public static readonly Color Green = new Color(0, 255, 0);
-        public static readonly Color Blue = new Color(0, 0, 255);
+        public static readonly Color Black = new(0, 0, 0);
+        public static readonly Color White = new(255, 255, 255);
+        public static readonly Color Red = new(255, 0, 0);
+        public static readonly Color Green = new(0, 255, 0);
+        public static readonly Color Blue = new(0, 0, 255);
         
         public byte R;
         public byte G;
@@ -48,7 +45,7 @@ namespace TourOfCsharp
             {
                 j = i * i;
                 Console.WriteLine($"{i} x {i} = {j}");
-                i = i + 1;
+                i++;
             }
         }
     }
@@ -156,7 +153,7 @@ namespace TourOfCsharp
         static void F(object x) => Console.WriteLine("F(object)");
         static void F(int x) => Console.WriteLine("F(int)");
         static void F(double x) => Console.WriteLine("F(double)");
-        static void F<T>(T x) => Console.WriteLine("F<T>(T)");            
+        static void F<T>(T x) => Console.WriteLine($"F<T>(T), T is {typeof(T)}");            
         static void F(double x, double y) => Console.WriteLine("F(double, double)");
         
         public static void UsageExample()
@@ -164,10 +161,10 @@ namespace TourOfCsharp
             F();            // Invokes F()
             F(1);           // Invokes F(int)
             F(1.0);         // Invokes F(double)
-            F("abc");       // Invokes F<string>(string)
+            F("abc");       // Invokes F<T>(T), T is System.String
             F((double)1);   // Invokes F(double)
             F((object)1);   // Invokes F(object)
-            F<int>(1);      // Invokes F<int>(int)
+            F<int>(1);      // Invokes F<T>(T), T is System.Int32
             F(1, 1);        // Invokes F(double, double)
         }
     }
@@ -208,8 +205,10 @@ namespace TourOfCsharp
             get => _items[index];
             set
             {
-                _items[index] = value;
-                OnChanged();
+                if (!object.Equals(_items[index], value)) {
+                    _items[index] = value;
+                    OnChanged();
+                }
             }
         }
 
@@ -293,16 +292,16 @@ namespace TourOfCsharp
         // </RefExample>
 
         // <OutExample>
-        static void Divide(int x, int y, out int result, out int remainder)
+        static void Divide(int x, int y, out int quotient, out int remainder)
         {
-            result = x / y;
+            quotient = x / y;
             remainder = x % y;
         }
         
         public static void OutUsage()
         {
-            Divide(10, 3, out int res, out int rem);
-            Console.WriteLine($"{res} {rem}");	// "3 1"
+            Divide(10, 3, out int quo, out int rem);
+            Console.WriteLine($"{quo} {rem}");	// "3 1"
         }
         // </OutExample>
 
@@ -336,8 +335,8 @@ namespace TourOfCsharp
         {
             // <UsingEntity>
             Entity.SetNextSerialNo(1000);
-            Entity e1 = new Entity();
-            Entity e2 = new Entity();
+            Entity e1 = new();
+            Entity e2 = new();
             Console.WriteLine(e1.GetSerialNo());          // Outputs "1000"
             Console.WriteLine(e2.GetSerialNo());          // Outputs "1001"
             Console.WriteLine(Entity.GetNextSerialNo());  // Outputs "1002"
@@ -366,7 +365,7 @@ namespace TourOfCsharp
                     new Constant(2)
                 )
             );
-            Dictionary<string, object> vars = new Dictionary<string, object>();
+            Dictionary<string, object> vars = new();
             vars["x"] = 3;
             vars["y"] = 5;
             Console.WriteLine(e.Evaluate(vars)); // "21"
@@ -379,12 +378,12 @@ namespace TourOfCsharp
         private static void ListExampleOne()
         {
             // <CreateLists>
-            MyList<string> list1 = new MyList<string>();
-            MyList<string> list2 = new MyList<string>(10);
+            MyList<string> list1 = new();
+            MyList<string> list2 = new(10);
             // </CreateLists>
 
             // <AccessProperties>
-            MyList<string> names = new MyList<string>();
+            MyList<string> names = new();
             names.Capacity = 100;   // Invokes set accessor
             int i = names.Count;    // Invokes get accessor
             int j = names.Capacity; // Invokes get accessor
@@ -394,10 +393,10 @@ namespace TourOfCsharp
         private static void ListAddition()
         {
             // <ListAddition>
-            MyList<int> a = new MyList<int>();
+            MyList<int> a = new();
             a.Add(1);
             a.Add(2);
-            MyList<int> b = new MyList<int>();
+            MyList<int> b = new();
             b.Add(1);
             b.Add(2);
             Console.WriteLine(a == b);  // Outputs "True"
@@ -409,7 +408,7 @@ namespace TourOfCsharp
         private static void ListAccess()
         {
             // <ListAccess>
-            MyList<string> names = new MyList<string>();
+            MyList<string> names = new();
             names.Add("Liz");
             names.Add("Martha");
             names.Add("Beth");

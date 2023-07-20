@@ -10,7 +10,7 @@ f1_keywords:
 
 **This article applies to:** ✔️ .NET Core 2.1.100 SDK and later versions
 
-This error occurs when the build tools can't find the version of the .NET SDK that's needed to build a project. This is typically due to a .NET Core SDK installation or configuration issue. The full error message is similar to the following example:
+This error occurs when the build tools can't find the version of the .NET SDK that's needed to build a project. This is typically due to a .NET SDK installation or configuration issue. The full error message is similar to the following example:
 
 > NETSDK1045: The current .NET SDK does not support 'newer version' as a target. Either target 'older version' or lower, or use a .NET SDK version that supports 'newer version'.
 
@@ -44,6 +44,14 @@ If you have a preview installed of the requested .NET SDK version, you also need
 
 For example, .NET Core 3.0 and later require Visual Studio 2019. Upgrade to [Visual Studio 2019 version 16.3](https://visualstudio.microsoft.com/downloads) or later to build your project.
 
+## Visual Studio for Mac
+
+VS for Mac supports both `dotnet msbuild` and MSBuild on Mono. But the .NET SDK version is downgraded when MSBuild on Mono is used, and this can result in the NETSDK1045 error.
+
+Open the **Solution Properties** window (ctrl-click the solution in the **Solution** window and select **Properties**), select **Build - General**, and uncheck **Build with MSBuild on Mono**. This **Build with MSBuild on Mono** option will be checked if there are any classic projects in the solution, and this can cause problems since Mono does not support the later .NET SDKs.
+
+For more information about which Visual Studio for Mac 2022 versions support which .NET versions, see [Supported versions of .NET](/visualstudio/mac/supported-versions-net).
+
 ## PATH environment variable
 
 The build tools use the PATH environment variable to find the right version of the .NET build tools. If the PATH environment variable contains direct paths to older build tools, this error message could appear. Make sure the only path to the .NET tools in the PATH environment variable is to the top-level *dotnet* folder, for example, *C:\Program Files\dotnet*. An example of an incorrect PATH would be something like *C:\Program Files\dotnet\2.1.0\sdks*.
@@ -72,4 +80,5 @@ The *Directory.build.props* file is an optional MSBuild file that can set global
 
 ## See also
 
+- [.NET Downloads](https://dotnet.microsoft.com/download/dotnet)
 - [The Current .NET SDK does not support targeting .NET Core 3.0 – Fix](https://www.ryadel.com/current-net-sdk-not-support-net-core-3-0-fix/)

@@ -5,7 +5,7 @@ ms.date: 07/08/2021
 ---
 # dotnet workload uninstall
 
-**This article applies to:** ✔️ .NET 6 Preview SDK and later versions
+**This article applies to:** ✔️ .NET 6 SDK and later versions
 
 ## Name
 
@@ -32,8 +32,6 @@ For more information about the `dotnet workload` commands, see the [dotnet workl
   The workload ID or multiple IDs to uninstall.
 
 ## Options
-
-<!-- markdownlint-disable MD012 -->
 
 [!INCLUDE [help](../../../includes/cli-help.md)]
 

@@ -12,7 +12,7 @@ ms.date: 03/14/2021
 .NET applications can be instrumented using the <xref:System.Diagnostics.Activity?displayProperty=nameWithType> API to produce
 distributed tracing telemetry. Some instrumentation is built into standard .NET libraries, but you may want to add more to make
 your code more easily diagnosable. In this tutorial, you will add new custom distributed tracing instrumentation. See
-[the collection tutorial](distributed-tracing-instrumentation-walkthroughs.md) to learn more about recording the telemetry
+[the collection tutorial](distributed-tracing-collection-walkthroughs.md) to learn more about recording the telemetry
 produced by this instrumentation.
 
 ## Prerequisites
@@ -45,7 +45,7 @@ dotnet add package OpenTelemetry.Exporter.Console
 
 Replace the contents of the generated Program.cs with this example source:
 
-```C#
+```csharp
 using OpenTelemetry;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
@@ -250,7 +250,7 @@ if(activity != null)
 ```
 
 - OpenTelemetry provides a set of recommended
-[conventions](https://github.com/open-telemetry/opentelemetry-specification/tree/main/specification/trace/semantic_conventions)
+[conventions](https://github.com/open-telemetry/opentelemetry-specification/blob/main/specification/trace/semantic_conventions/README.md)
 for setting Tags on Activities that represent common types of application work.
 
 - If you are instrumenting functions with high-performance requirements,
@@ -445,7 +445,7 @@ void DoBatchWork(ActivityContext[] requestContexts)
     // Assume each context in requestContexts encodes the trace-id that was sent with a request
     using(Activity activity = s_source.StartActivity(name: "BigBatchOfWork",
                                                      kind: ActivityKind.Internal,
-                                                     parentContext: null,
+                                                     parentContext: default,
                                                      links: requestContexts.Select(ctx => new ActivityLink(ctx))
     {
         // do the batch of work here

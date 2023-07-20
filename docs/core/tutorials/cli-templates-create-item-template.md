@@ -3,7 +3,7 @@ title: Create an item template for dotnet new - .NET CLI
 titleSuffix: ""
 description: Learn how to create an item template for the dotnet new command. Item templates can contain any number of files.
 author: adegeo
-ms.date: 12/11/2020
+ms.date: 02/03/2021
 ms.topic: tutorial
 ms.author: adegeo
 recommendations: false
@@ -12,6 +12,8 @@ recommendations: false
 # Tutorial: Create an item template
 
 With .NET, you can create and deploy templates that generate projects, files, even resources. This tutorial is part one of a series that teaches you how to create, install, and uninstall templates for use with the `dotnet new` command.
+
+You can view the completed template in the [.NET Samples GitHub repository](https://github.com/dotnet/samples/tree/main/core/tutorials/cli-templates-create-item-template).
 
 In this part of the series, you'll learn how to:
 
@@ -25,12 +27,14 @@ In this part of the series, you'll learn how to:
 
 ## Prerequisites
 
-* [.NET 5.0 SDK](https://dotnet.microsoft.com/download) or a later version.
+* [.NET SDK 7.0.100](https://dotnet.microsoft.com/download) or a later version.
 * Read the reference article [Custom templates for dotnet new](../tools/custom-templates.md).
 
   The reference article explains the basics about templates and how they're put together. Some of this information will be reiterated here.
 
 * Open a terminal and navigate to the _working\templates_ folder.
+
+[!INCLUDE [dotnet6-syntax-note](includes/dotnet6-syntax-note.md)]
 
 ## Create the required folders
 
@@ -119,27 +123,19 @@ The `classifications` item represents the **tags** column you see when you run `
 
 Now that you have a valid _.template.config/template.json_ file, your template is ready to be installed. In your terminal, navigate to the  _extensions_ folder and run the following command to install the template located at the current folder:
 
-* **On Windows**: `dotnet new -i .\`
-* **On Linux or macOS**: `dotnet new -i ./`
+* **On Windows**: `dotnet new install .\`
+* **On Linux or macOS**: `dotnet new install ./`
 
 This command outputs the list of templates installed, which should include yours.
 
 ```console
-C:\working\templates\extensions> dotnet new -i .\
-Usage: new [options]
+The following template packages will be installed:
+   <root path>\working\templates\extensions
 
-Options:
-  -h, --help          Displays help for this command.
-  -l, --list          Lists templates containing the specified name. If no name is specified, lists all templates.
-
-... cut to save space ...
-
+Success: <root path>\working\templates\extensions installed the following templates:
 Templates                                         Short Name               Language          Tags
 --------------------------------------------      -------------------      ------------      ----------------------
 Example templates: string extensions              stringext                [C#]              Common/Code
-Console Application                               console                  [C#], F#, VB      Common/Console
-Class library                                     classlib                 [C#], F#, VB      Common/Library
-WPF Application                                   wpf                      [C#], VB          Common/WPF
 ```
 
 ## Test the item template
@@ -171,7 +167,7 @@ dotnet run
 You get the following output.
 
 ```console
-Hello World!
+Hello, World!
 ```
 
 Next, run `dotnet new stringext` to generate the _CommonExtensions.cs_ from the template.
@@ -186,10 +182,10 @@ You get the following output.
 The template "Example templates: string extensions" was created successfully.
 ```
 
-Change the code in _Program.cs_ to reverse the `"Hello World"` string with the extension method provided by the template.
+Change the code in _Program.cs_ to reverse the `"Hello, World!"` string with the extension method provided by the template.
 
 ```csharp
-Console.WriteLine("Hello World!".Reverse());
+Console.WriteLine("Hello, World!".Reverse());
 ```
 
 Run the program again and you'll see that the result is reversed.
@@ -201,54 +197,25 @@ dotnet run
 You get the following output.
 
 ```console
-!dlroW olleH
+!dlroW ,olleH
 ```
 
 Congratulations! You created and deployed an item template with .NET. In preparation for the next part of this tutorial series, you must uninstall the template you created. Make sure to delete all files from the _test_ folder too. This will get you back to a clean state ready for the next major section of this tutorial.
 
 ## Uninstall the template
 
-Because you installed the template by file path, you must uninstall it with the **absolute** file path. You can see a list of templates installed by running the `dotnet new -u` command. Your template should be listed last. Use the `Uninstall Command` listed to uninstall your template.
+In your terminal, navigate to the  _extensions_ folder and run the following command to uninstall the templates located at the current folder:
 
-```dotnetcli
-dotnet new -u
-```
+* **On Windows**: `dotnet new uninstall .\`
+* **On Linux or macOS**: `dotnet new uninstall ./`
 
-You get output similar to the following.
+This command outputs a list of the templates that were uninstalled, which should include yours.
 
 ```console
-Template Instantiation Commands for .NET Core CLI
-
-Currently installed items:
-  Microsoft.DotNet.Common.ProjectTemplates.2.2
-    Details:
-      NuGetPackageId: Microsoft.DotNet.Common.ProjectTemplates.2.2
-      Version: 1.0.2-beta4
-      Author: Microsoft
-    Templates:
-      Class library (classlib) C#
-      Class library (classlib) F#
-      Class library (classlib) VB
-      Console Application (console) C#
-      Console Application (console) F#
-      Console Application (console) VB
-    Uninstall Command:
-      dotnet new -u Microsoft.DotNet.Common.ProjectTemplates.2.2
-
-... cut to save space ...
-
-C:\Test\templatetutorial\working\templates\extensions
-    Templates:
-      Example templates: string extensions (stringext) C#
-    Uninstall Command:
-      dotnet new -u C:\working\templates\extensions
+Success: <root path>\working\templates\extensions was uninstalled.
 ```
 
-To uninstall the template that you created, run the `Uninstall Command` that is shown in the output.
-
-```dotnetcli
-dotnet new -u C:\working\templates\extensions
-```
+At any time, you can use `dotnet new uninstall` to see a list of installed template packages, including for each template package the command to uninstall it.
 
 ## Next steps
 

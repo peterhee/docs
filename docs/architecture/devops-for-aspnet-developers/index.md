@@ -3,7 +3,7 @@ title: DevOps for ASP.NET Core Developers
 author: CamSoper
 description: A guide that provides end-to-end guidance on building a DevOps pipeline for an ASP.NET Core app hosted in Azure.
 ms.author: casoper
-ms.date: 04/13/2021
+ms.date: 01/10/2022
 ms.custom: "devx-track-csharp, mvc, seodec18"
 no-loc: [appsettings.json, "ASP.NET Core Identity", cookie, Cookie, Blazor, "Blazor Server", "Blazor WebAssembly", "Identity", "Let's Encrypt", Razor, SignalR]
 uid: azure/devops/index
@@ -28,7 +28,7 @@ One Microsoft Way
 
 Redmond, Washington 98052-6399
 
-Copyright &copy; 2021 by Microsoft Corporation
+Copyright &copy; 2022 by Microsoft Corporation
 
 All rights reserved. No part of the contents of this book may be reproduced or transmitted in any form or by any means without the written permission of the publisher.
 
@@ -93,6 +93,8 @@ Use Azure's tools to monitor, troubleshoot, and tune your application.
 ### [Next steps](xref:azure/devops/next-steps)
 
 Other learning paths for the ASP.NET Core developer learning Azure.
+
+[!INCLUDE [feedback](../includes/feedback.md)]
 
 ## Additional introductory reading
 

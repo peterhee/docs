@@ -21,7 +21,7 @@ helpviewer_keywords:
   - "AdditionalLibPaths compiler option [C#]"
   - "ApplicationConfiguration compiler option [C#]"
   - "ModuleAssemblyName compiler option [C#]"
-
+  - "ReportIVTs compiler option [C#]"
 ---
 # Advanced C# compiler options
 
@@ -43,6 +43,16 @@ The following options support advanced scenarios. The new MSBuild syntax is show
 - **NoStandardLib** / `-nostdlib`: Don't reference standard library *mscorlib.dll*.
 - **SubsystemVersion** / `-subsystemversion`: Specify subsystem version of this assembly.
 - **ModuleAssemblyName** / `-moduleassemblyname`: Name of the assembly that this module will be a part of.
+- **ReportIVTs** / `-reportivts`: Produce additional information on <xref:System.Runtime.CompilerServices.InternalsVisibleToAttribute?displayProperty=nameWithType> information.
+
+You add any of these options in a `<PropertyGroup>` element in your `*.csproj` file:
+
+```xml
+<PropertyGroup>
+    <StartupObject>...</StartupObject>
+    ...
+</PropertyGroup>
+``````
 
 ## MainEntryPoint or StartupObject
 
@@ -75,10 +85,10 @@ When you specify [**DebugType**](code-generation.md#debugtype), the compiler wil
 
 ## PathMap
 
-The **PathMap** compiler option specifies how to map physical paths to source path names output by the compiler. This option maps each physical path on the machine where the compiler runs to a corresponding path that should be written in the output files. In the following example, `path1` is the full path to the source files in the current environment, and `sourcePath1` is the source path substituted for `path1` in any output files. To specify multiple mapped source paths, separate each with a semicolon.
+The **PathMap** compiler option specifies how to map physical paths to source path names output by the compiler. This option maps each physical path on the machine where the compiler runs to a corresponding path that should be written in the output files. In the following example, `path1` is the full path to the source files in the current environment, and `sourcePath1` is the source path substituted for `path1` in any output files. To specify multiple mapped source paths, separate each with a comma.
 
 ```xml
-<PathMap>path1=sourcePath1;path2=sourcePath2</PathMap>
+<PathMap>path1=sourcePath1,path2=sourcePath2</PathMap>
 ```
 
 The compiler writes the source path into its output for the following reasons:
@@ -134,7 +144,7 @@ Where `dir1` is a directory for the compiler to look in if a referenced assembly
 1. Directories specified by **AdditionalLibPaths**.
 1. Directories specified by the LIB environment variable.
 
-Use **Reference** to specify an assembly reference. **AdditionalLibPaths** is additive. Specifying it more than once appends to any prior values. Since the path to the dependent assembly isn't specified in the assembly manifest, the application will find and use the assembly in the global assembly cache. The compiler referencing the assembly doesn't imply the common language runtime can find and load the assembly at runtime. See [How the Runtime Locates Assemblies](../../../framework/deployment/how-the-runtime-locates-assemblies.md) for details on how the runtime searches for referenced assemblies.  
+Use **Reference** to specify an assembly reference. **AdditionalLibPaths** is additive. Specifying it more than once appends to any prior values. Since the path to the dependent assembly isn't specified in the assembly manifest, the application will find and use the assembly in the global assembly cache. The compiler referencing the assembly doesn't imply the common language runtime can find and load the assembly at run time. See [How the Runtime Locates Assemblies](../../../framework/deployment/how-the-runtime-locates-assemblies.md) for details on how the runtime searches for referenced assemblies.  
 
 ## GenerateFullPaths
 
@@ -211,7 +221,7 @@ You set the **FileAlignment** option from the **Advanced** page of the **Build**
 Instructs the compiler to output line and column of the end location of each error.
 
 ```xml
-<ErrorEndLocation>filename</ErrorEndLocation>
+<ErrorEndLocation>true</ErrorEndLocation>
 ```
 
 By default, the compiler writes the starting location in source for all errors and warnings. When this option is set to true, the compiler writes both the starting and end location for each error and warning.
@@ -273,3 +283,22 @@ Specifies the name of an assembly whose non-public types a *.netmodule* can acce
 - The existing assembly has granted friend assembly access to the assembly into which the .*netmodule* will be built.
 
 For more information on building a .netmodule, see [**TargetType**](output.md#targettype) option of **module**. For more information on friend assemblies, see [Friend Assemblies](../../../standard/assembly/friend.md).
+
+## ReportIVTs
+
+Enable or disable additional diagnostic information about <xref:System.Runtime.CompilerServices.InternalsVisibleToAttribute?displayProperty=nameWithType> found during the compilation:
+
+```xml
+<ReportIVTs>true</ReportIVTs>
+```
+
+The diagnostics are enabled if the element content is `true`, disabled if `false`, or not present.
+
+**ReportIVTs** reports the following information when enabled:
+
+1. Any inaccessible member diagnostics include their source assembly, if different than the current assembly.
+1. The compiler prints the assembly identity of the project being compiled, its assembly name and public key.
+1. For every reference passed to the compiler, it prints;
+   1. The assembly identity of the reference
+   1. Whether the reference grants the current project `InternalsVisibleTo`
+   1. The name and all public keys of any assemblies granted `InternalsVisibleTo` from this assembly

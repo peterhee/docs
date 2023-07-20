@@ -1,7 +1,7 @@
 ---
 title: "Type Relationships in LINQ Query Operations (C#)"
 description: Learn how types of variables in a LINQ query relate to each other. LINQ query operations are strongly typed in the data source, in the query, and in execution.
-ms.date: 07/20/2015
+ms.date: 07/14/2023
 helpviewer_keywords: 
   - "inferring type information [LINQ in C#]"
   - "data sources [LINQ in C#], type relationships"
@@ -20,7 +20,7 @@ To write queries effectively, you should understand how types of the variables i
   
  LINQ query operations are strongly typed in the data source, in the query itself, and in the query execution. The type of the variables in the query must be compatible with the type of the elements in the data source and with the type of the iteration variable in the `foreach` statement. This strong typing guarantees that type errors are caught at compile time when they can be corrected before users encounter them.  
   
- In order to demonstrate these type relationships, most of the examples that follow use explicit typing for all variables. The last example shows how the same principles apply even when you use implicit typing by using [var](../../../language-reference/keywords/var.md).  
+ In order to demonstrate these type relationships, most of the examples that follow use explicit typing for all variables. The last example shows how the same principles apply even when you use implicit typing by using [var](../../../language-reference/statements/declarations.md#implicitly-typed-local-variables).  
   
 ## Queries that do not Transform the Source Data  
 
@@ -58,8 +58,35 @@ To write queries effectively, you should understand how types of the variables i
   
 ## Letting the compiler infer type information  
 
- Although you should understand the type relationships in a query operation, you have the option to let the compiler do all the work for you. The keyword [var](../../../language-reference/keywords/var.md) can be used for any local variable in a query operation. The following illustration is similar to example number 2 that was discussed earlier. However, the compiler supplies the strong type for each variable in the query operation.  
+ Although you should understand the type relationships in a query operation, you have the option to let the compiler do all the work for you. The keyword [var](../../../language-reference/statements/declarations.md#implicitly-typed-local-variables) can be used for any local variable in a query operation. The following illustration is similar to example number 2 that was discussed earlier. However, the compiler supplies the strong type for each variable in the query operation.  
   
  ![Diagram that shows the type flow with implicit typing.](./media/type-relationships-in-linq-query-operations/linq-type-flow-implicit-typing.png)  
   
  For more information about `var`, see [Implicitly Typed Local Variables](../../classes-and-structs/implicitly-typed-local-variables.md).  
+
+## LINQ and generic types (C#)
+
+LINQ queries are based on generic types. You do not need an in-depth knowledge of generics before you can start writing queries. However, you may want to understand two basic concepts:  
+  
+1. When you create an instance of a generic collection class such as <xref:System.Collections.Generic.List%601>, you replace the "T" with the type of objects that the list will hold. For example, a list of strings is expressed as `List<string>`, and a list of `Customer` objects is expressed as `List<Customer>`. A generic list is strongly typed and provides many benefits over collections that store their elements as <xref:System.Object>. If you try to add a `Customer` to a `List<string>`, you will get an error at compile time. It is easy to use generic collections because you do not have to perform run-time type-casting.  
+  
+2. <xref:System.Collections.Generic.IEnumerable%601> is the interface that enables generic collection classes to be enumerated by using the `foreach` statement. Generic collection classes support <xref:System.Collections.Generic.IEnumerable%601> just as non-generic collection classes such as <xref:System.Collections.ArrayList> support <xref:System.Collections.IEnumerable>.  
+  
+ For more information about generics, see [Generics](../../../fundamentals/types/generics.md).  
+  
+## IEnumerable<T\> variables in LINQ queries  
+
+ LINQ query variables are typed as <xref:System.Collections.Generic.IEnumerable%601> or a derived type such as <xref:System.Linq.IQueryable%601>. When you see a query variable that is typed as `IEnumerable<Customer>`, it just means that the query, when it is executed, will produce a sequence of zero or more `Customer` objects.  
+  
+ [!code-csharp[csLINQGettingStarted#34](~/samples/snippets/csharp/VS_Snippets_VBCSharp/CsLINQGettingStarted/CS/Class1.cs#34)]  
+  
+ For more information, see [Type Relationships in LINQ Query Operations](./type-relationships-in-linq-query-operations.md).  
+  
+## Letting the compiler handle generic type declarations  
+
+ If you prefer, you can avoid generic syntax by using the [var](../../../language-reference/statements/declarations.md#implicitly-typed-local-variables) keyword. The `var` keyword instructs the compiler to infer the type of a query variable by looking at the data source specified in the `from` clause. The following example produces the same compiled code as the previous example:  
+  
+ [!code-csharp[csLINQGettingStarted#35](~/samples/snippets/csharp/VS_Snippets_VBCSharp/CsLINQGettingStarted/CS/Class1.cs#35)]  
+  
+ The `var` keyword is useful when the type of the variable is obvious or when it is not that important to explicitly specify nested generic types such as those that are produced by group queries. In general, we recommend that if you use `var`, realize that it can make your code more difficult for others to read. For more information, see [Implicitly Typed Local Variables](../../classes-and-structs/implicitly-typed-local-variables.md).  
+  

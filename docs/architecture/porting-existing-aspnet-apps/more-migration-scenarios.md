@@ -1,13 +1,13 @@
 ---
 title: More migration scenarios
-description: This section describes additional migration scenarios and techniques for upgrading .NET Framework apps to .NET Core / .NET 5.
+description: This section describes additional migration scenarios and techniques for upgrading .NET Framework apps to .NET Core / .NET 7.
 author: ardalis
-ms.date: 02/11/2021
+ms.date: 12/10/2021
 ---
 
 # More migration scenarios
 
-[!INCLUDE [book-preview](../../../includes/book-preview.md)]
+[!INCLUDE [download-alert](includes/download-alert.md)]
 
 This section describes several different ASP.NET app scenarios, and offers specific techniques for solving each of them. You can use this section to identify scenarios applicable to your app, and evaluate which techniques will work for your app and its hosting environment.
 
@@ -42,7 +42,7 @@ protected IContainer RegisterContainer()
 }
 ```
 
-When upgrading these apps to use ASP.NET Core, this duplicate effort and the confusion that sometimes accompanies it is eliminated. ASP.NET Core MVC is a unified framework with one set of rules for routing, filters, and more. Dependency injection is built into .NET Core itself. All of this can can be configured in `Startup.cs`, as is shown in the `eShopPorted` app in the sample.
+When upgrading these apps to use ASP.NET Core, this duplicate effort and the confusion that sometimes accompanies it is eliminated. ASP.NET Core MVC is a unified framework with one set of rules for routing, filters, and more. Dependency injection is built into .NET Core itself. All of this can be configured in _Program.cs_, as is shown in the `eShopPorted` app in the sample.
 
 ## Migrate HttpResponseMessage to ASP.NET Core
 
@@ -153,16 +153,13 @@ public static class WebApiConfig
 }
 ```
 
-When migrating [custom model providers to ASP.NET Core](/aspnet/core/mvc/advanced/custom-model-binding#custom-model-binder-sample), the Web API pattern is closer to the ASP.NET Core approach than the ASP.NET MVC 5. The main differences between ASP.NET Core's `IModelBinder` interface and Web API's is that the ASP.NET Core method is async (`BindModelAsync`) and it only requires a single `BindingModelContext` parameter instead of two parameters like Web API's version required. In ASP.NET Core, you can use a `[ModelBinder]` attribute on individual action method parameters or their associated types. You can also create a `ModelBinderProvider` that will be used globally within the app where appropriate. To configure such a provider, you would add code to `Startup` in `ConfigureServices`:
+When migrating [custom model providers to ASP.NET Core](/aspnet/core/mvc/advanced/custom-model-binding#custom-model-binder-sample), the Web API pattern is closer to the ASP.NET Core approach than the ASP.NET MVC 5. The main differences between ASP.NET Core's `IModelBinder` interface and Web API's is that the ASP.NET Core method is async (`BindModelAsync`) and it only requires a single `BindingModelContext` parameter instead of two parameters like Web API's version required. In ASP.NET Core, you can use a `[ModelBinder]` attribute on individual action method parameters or their associated types. You can also create a `ModelBinderProvider` that will be used globally within the app where appropriate. To configure such a provider, you would add code to _Program.cs_:
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
+builder.Services.AddControllers(options =>
 {
-    services.AddControllers(options =>
-    {
-        options.ModelBinderProviders.Insert(0, new CustomModelBinderProvider());
-    });
-}
+    options.ModelBinderProviders.Insert(0, new CustomModelBinderProvider());
+});
 ```
 
 ## Media formatters
@@ -178,17 +175,14 @@ public static void ConfigureApis(HttpConfiguration config)
 }
 ```
 
-In ASP.NET Core, the process is similar. ASP.NET Core supports both input formatters (used by model binding) and output formatters (used to format responses). Adding a custom formatter to output responses in a specific way involves inheriting from an appropriate base class and adding the formatter to MVC in `Startup`:
+In ASP.NET Core, the process is similar. ASP.NET Core supports both input formatters (used by model binding) and output formatters (used to format responses). Adding a custom formatter to output responses in a specific way involves inheriting from an appropriate base class and adding the formatter to MVC in _Program.cs_:
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
+builder.Services.AddControllers(options =>
 {
-    services.AddControllers(options =>
-    {
-        options.InputFormatters.Insert(0, new CustomInputFormatter());
-        options.OutputFormatters.Insert(0, new CustomOutputFormatter());
-    });
-}
+    options.InputFormatters.Insert(0, new CustomInputFormatter());
+    options.OutputFormatters.Insert(0, new CustomOutputFormatter());
+});
 ```
 
 You'll find a complete list of base classes in the <xref:Microsoft.AspNetCore.Mvc.Formatters?displayProperty=fullName> namespace.
@@ -239,20 +233,17 @@ ASP.NET Core uses route constraints to help ensure requests are routed properly 
 [Route("/customer/{id:int}")]
 ```
 
-The `:int` after the `id` route parameter constrains the value to match the the `int` type. One benefit of using route constraints is that they allow for two otherwise-identical routes to exist where the parameters differ only by their type. This allows for the equivalent of [method overloading](../../standard/design-guidelines/member-overloading.md) of routes based solely on parameter type.
+The `:int` after the `id` route parameter constrains the value to match the `int` type. One benefit of using route constraints is that they allow for two otherwise-identical routes to exist where the parameters differ only by their type. This allows for the equivalent of [method overloading](../../standard/design-guidelines/member-overloading.md) of routes based solely on parameter type.
 
 The set of route constraints, their syntax, and usage is very similar between all three approaches. Custom route constraints are fairly rare in customer applications. If your app uses a custom route constraint and needs to port to ASP.NET Core, the docs include examples showing [how to create custom route constraints in ASP.NET Core](/aspnet/core/fundamentals/routing#custom-route-constraints). Essentially all that's required is to implement `IRouteConstraint` and its `Match` method, and then add the custom constraint when configuring routing for the app:
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
-{
-    services.AddControllers();
+builder.Services.AddControllers();
 
-    services.AddRouting(options =>
-    {
-        options.ConstraintMap.Add("customName", typeof(MyCustomConstraint));
-    });
-}
+builder.Services.AddRouting(options =>
+{
+    options.ConstraintMap.Add("customName", typeof(MyCustomConstraint));
+});
 ```
 
 This is very similar to how custom constraints are used in ASP.NET Web API, which uses `IHttpRouteConstraint` and configures it using a resolver and a call to `HttpConfiguration.MapHttpAttributeRoutes`:
@@ -301,29 +292,23 @@ public static void RegisterRoutes(RouteCollection routes)
 }
 ```
 
-To migrate custom route handlers from ASP.NET MVC 5 to ASP.NET Core, you can either use a filter (such as an action filter) or a custom [`IRouter`](/dotnet/api/microsoft.aspnetcore.routing.irouter). The filter approach is relatively straightforward, and can be added as a global filter when MVC is added to `ConfigureServices` in *Startup.cs*.
+To migrate custom route handlers from ASP.NET MVC 5 to ASP.NET Core, you can either use a filter (such as an action filter) or a custom [`IRouter`](/dotnet/api/microsoft.aspnetcore.routing.irouter). The filter approach is relatively straightforward, and can be added as a global filter when MVC is added to the app's services during startup:
 
 ```csharp
-public void ConfigureServices(IServiceCollection services)
+builder.Services.AddMvc(options =>
 {
-    services.AddMvc(options =>
-    {
-        options.Filters.Add(typeof(CustomActionFilter));
-    });
-}
+    options.Filters.Add(typeof(CustomActionFilter));
+});
 ```
 
-The `IRouter` option requires implementing the interface's `RouteAsync` and `GetVirtualPath` methods. The custom router is added to the request pipeline in the `Configure` method in *Startup.cs*.
+The `IRouter` option requires implementing the interface's `RouteAsync` and `GetVirtualPath` methods. The custom router is added to the request pipeline during app startup.
 
 ```csharp
-public void Configure(IApplicationBuilder app)
+// ...
+app.UseMvc(routes =>
 {
-    // ...
-    app.UseMvc(routes =>
-    {
-        routes.Routes.Add(new CustomRouter(routes.DefaultHandler));
-    });
-}
+    routes.Routes.Add(new CustomRouter(routes.DefaultHandler));
+});
 ```
 
 In ASP.NET Web API, these handlers are referred to as [custom message handlers](/aspnet/web-api/overview/advanced/http-message-handlers#custom-message-handlers), rather than *route handlers*. Message handlers must derive from `DelegatingHandler` and override its `SendAsync` method. Message handlers can be chained together to form a pipeline in a fashion that is very similar to ASP.NET Core middleware and its request pipeline.
@@ -375,7 +360,7 @@ In ASP.NET Core, there are three built-in ways to enable CORS:
 
 - [Configured via policy](/aspnet/core/security/cors?#cors-with-named-policy-and-middleware) in `ConfigureServices`
 - Enabled with [endpoint routing](/aspnet/core/security/cors?#enable-cors-with-endpoint-routing)
-- Enabled with the [`EnableCors` attribute](/aspnet/core/security/cors?view=aspnetcore-5.0#enable-cors-with-attributes)
+- Enabled with the [`EnableCors` attribute](/aspnet/core/security/cors#enable-cors-with-attributes)
 
 Each of these approaches is covered in detail in the docs, which are linked from the above options. Which one you choose will largely depend on how your existing app supports CORS. If the app uses attributes, you can probably migrate to use the `EnableCors` attribute most easily. If your app uses filters, you could continue using that approach (though it's not the typical approach used in ASP.NET Core), or migrate to use attributes or policies. Endpoint routing is a relatively new feature introduced with ASP.NET Core 3 and as such it doesn't have a close analog in ASP.NET MVC 5 or ASP.NET Web API 2 apps.
 
@@ -408,7 +393,7 @@ ASP.NET Web API apps don't typically use areas explicitly, since their controlle
 - Areas are applied using the `[Area("name")]` attribute (not `RouteArea` as in ASP.NET MVC 5)
 - Areas can be added to the route table templates, if desired (or they can use attribute routing)
 
-To add area support to the route table in ASP.NET Core MVC, you would add the following in `Configure` in *Startup.cs*:
+To add area support to the route table in ASP.NET Core MVC, you would add the following during app startup:
 
 ```csharp
 app.UseEndpoints(endpoints =>

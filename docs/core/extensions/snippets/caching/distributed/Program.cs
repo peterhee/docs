@@ -1,23 +1,20 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-IHost host = Host.CreateDefaultBuilder(args)
-    .ConfigureServices(services =>
-    {
-        // The distributed memory cache is for dev / testing scenarios only!
-        // Use an actual implementation of IDistributedCache such as:
-        //
-        // - https://www.nuget.org/packages/Microsoft.Extensions.Caching.StackExchangeRedis
-        // - https://www.nuget.org/packages/Microsoft.Extensions.Caching.SqlServer
-        //
-        services.AddDistributedMemoryCache();
-    })
-    .Build();
+HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
+
+// The distributed memory cache is for dev / testing scenarios only!
+// Use an actual implementation of IDistributedCache such as:
+//
+// - https://www.nuget.org/packages/Microsoft.Extensions.Caching.StackExchangeRedis
+// - https://www.nuget.org/packages/Microsoft.Extensions.Caching.SqlServer
+//
+builder.Services.AddDistributedMemoryCache();
+
+using IHost host = builder.Build();
 
 IDistributedCache cache =
     host.Services.GetRequiredService<IDistributedCache>();
@@ -38,6 +35,7 @@ static async ValueTask IterateAlphabetAsync(
 
 await IterateAlphabetAsync(async letter =>
 {
+    // <Create>
     DistributedCacheEntryOptions options = new()
     {
         AbsoluteExpirationRelativeToNow =
@@ -49,6 +47,7 @@ await IterateAlphabetAsync(async letter =>
     byte[] bytes = Encoding.UTF8.GetBytes(json);
 
     await cache.SetAsync(letter.ToString(), bytes, options);
+    // </Create>
 
     Console.WriteLine($"{alphabetLetter.Letter} was cached.");
 
@@ -58,6 +57,7 @@ await IterateAlphabetAsync(async letter =>
 
 await IterateAlphabetAsync(async letter =>
 {
+    // <Read>
     AlphabetLetter? alphabetLetter = null;
     byte[]? bytes = await cache.GetAsync(letter.ToString());
     if (bytes is { Length: > 0 })
@@ -65,6 +65,7 @@ await IterateAlphabetAsync(async letter =>
         string json = Encoding.UTF8.GetString(bytes);
         alphabetLetter = JsonSerializer.Deserialize<AlphabetLetter>(json);
     }
+    // </Read>
 
     if (alphabetLetter is not null)
     {
@@ -92,7 +93,7 @@ await IterateAlphabetAsync(async letter =>
 
 await host.RunAsync();
 
-record AlphabetLetter(char Letter)
+file record AlphabetLetter(char Letter)
 {
     internal string Message =>
         $"The '{Letter}' character is the {Letter - 64} letter in the English alphabet.";

@@ -88,7 +88,7 @@ Remember that open-source project maintainers and NuGet package publishers are o
 
 If you can't resolve your issue with any of these options, you may have to port to .NET Core at a later date.
 
-The .NET Team would like to know which libraries are the most important to support with .NET Core. You can send an email to dotnet@microsoft.com about the libraries you'd like to use.
+The .NET Team would like to know which libraries are the most important to support with .NET Core. You can send an email to <dotnet@microsoft.com> about the libraries you'd like to use.
 
 ## Analyze non-NuGet dependencies
 
@@ -97,4 +97,3 @@ You may have a dependency that isn't a NuGet package, such as a DLL in the file 
 ## Next steps
 
 - [Overview of porting from .NET Framework to .NET](index.md)
-- [Port libraries](libraries.md)

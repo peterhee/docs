@@ -11,7 +11,7 @@ ms.date: 10/23/2020
 
 When performance problems are encountered on Linux, collecting a trace with `perfcollect` can be used to gather detailed information about what was happening on the machine at the time of the performance problem.
 
-`perfcollect` is a bash script that leverages [Linux Tracing Tookit-Next Generation (LTTng)](https://lttng.org) to collect events written from the runtime or any [EventSource](xref:System.Diagnostics.Tracing.EventListener), as well as [perf](https://perf.wiki.kernel.org/) to collect CPU samples of the target process.
+`perfcollect` is a bash script that uses [Linux Trace Toolkit: next generation (LTTng)](https://lttng.org) to collect events written from the runtime or any [EventSource](xref:System.Diagnostics.Tracing.EventListener), as well as [perf](https://perf.wiki.kernel.org/) to collect CPU samples of the target process.
 
 ## Prepare your machine
 
@@ -42,7 +42,7 @@ Follow these steps to prepare your machine to collect a performance trace with `
 
     1. `perf`: the Linux Performance Events subsystem and companion user-mode collection/viewer application. `perf` is part of the Linux kernel source, but is not usually installed by default.
 
-    2. `LTTng`: Used to capture event data emitted at runtime by CoreCLR. This data is then used to analyze the behavior of various runtime components such as the GC, JIT, and thread pool.
+    2. `LTTng`: Used to capture event data emitted at run time by CoreCLR. This data is then used to analyze the behavior of various runtime components such as the GC, JIT, and thread pool.
 
 Recent versions of .NET Core and the Linux perf tool support automatic resolution of method names for framework code. If you are working with .NET Core version 3.1 or less, an extra step is necessary. See [Resolving Framework Symbols](#resolve-framework-symbols) for details.
 
@@ -69,6 +69,13 @@ For resolving method names of native runtime DLLs (such as libcoreclr.so), `perf
     > ```bash
     > export DOTNET_PerfMapEnabled=1
     > export DOTNET_EnableEventLog=1
+    > ```
+
+    > [!NOTE]
+    > When executing the app with .NET 7, you must also set `DOTNET_EnableWriteXorExecute=0` in addition to the preceding environment variables.  For example:
+    >
+    > ```bash
+    > export DOTNET_EnableWriteXorExecute=0
     > ```
 
    [!INCLUDE [complus-prefix](../../../includes/complus-prefix.md)]
@@ -158,6 +165,9 @@ For more information on how to interpret views in PerfView, see help links in th
 
 > [!NOTE]
 > Events written via <xref:System.Diagnostics.Tracing.EventSource?displayProperty=nameWithType> API (including the events from Framework) won't show up under their provider name. Instead, they are written as `EventSourceEvent` events under `Microsoft-Windows-DotNETRuntime` provider and their payloads are JSON serialized.
+
+> [!NOTE]
+> If you observe `[unknown] /memfd:doublemapper` frames in method names and callstacks, set `DOTNET_EnableWriteXorExecute=0` before running the app that you're tracing with perfcollect.
 
 ### Use TraceCompass to open the trace file
 
@@ -279,4 +289,4 @@ Collect more verbose GC collection events with JIT, Loader, and Exception events
 
 * `perfcollect collect -gcwithheap`
 
-Collect the most verbose GC collection events which tracks the heap survival and movements as well. This gives in-depth analysis of the GC behavior but will incur high performance cost as each GC can take more than two times longer. It is recommended you understand the performance implication of using this trace option when tracing in production environments.
+Collect the most verbose GC collection events, which tracks the heap survival and movements as well. This gives in-depth analysis of the GC behavior but will incur high performance cost as each GC can take more than two times longer. It is recommended you understand the performance implication of using this trace option when tracing in production environments.

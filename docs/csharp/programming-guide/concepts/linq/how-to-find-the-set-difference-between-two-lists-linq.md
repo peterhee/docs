@@ -33,7 +33,7 @@ class CompareLists
         foreach (string s in differenceQuery)  
             Console.WriteLine(s);  
   
-        // Keep the console window open in debug mode.  
+        // Keep the console window open until the user presses a key.
         Console.WriteLine("Press any key to exit");  
         Console.ReadKey();  
     }  
@@ -54,7 +54,3 @@ class CompareLists
 ## Compiling the Code  
 
  Create a C# console application project, with `using` directives for the System.Linq and System.IO namespaces.  
-  
-## See also
-
-- [LINQ and Strings (C#)](./linq-and-strings.md)

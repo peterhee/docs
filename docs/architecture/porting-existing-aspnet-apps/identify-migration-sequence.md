@@ -2,10 +2,12 @@
 title: Identify sequence of projects to migrate
 description: Large apps typically aren't migrated to new platforms all at once, but in a series of smaller steps. Learn how to plan the steps for migrating an ASP.NET MVC app to ASP.NET Core.
 author: ardalis
-ms.date: 11/13/2020
+ms.date: 12/10/2021
 ---
 
 # Identify sequence of projects to migrate
+
+[!INCLUDE [download-alert](includes/download-alert.md)]
 
 For solutions that involve multiple front-end apps, it's best to migrate the apps one by one. For example, create a solution that only includes one front-end app and its dependencies so you can easily identify the scope of work involved. Solutions are lightweight, and you can include projects in multiple solutions if needed. Take advantage of solutions as an organizational tool when migrating.
 
@@ -23,7 +25,9 @@ Figure 3-2 shows the installer for the [.NET Portability Analyzer Visual Studio 
 
 **Figure 3-2.** .NET Portability Analyzer installer.
 
-The extension supports Visual Studio 2017 and later. Once installed, you configure it from the **Analyze** > **Portability Analyzer Settings** menu, as shown in Figure 3-3.
+The extension currently supports Visual Studio 2017 and 2019. Visual Studio 2022 support is planned.
+
+Once installed, you configure it from the **Analyze** > **Portability Analyzer Settings** menu, as shown in Figure 3-3.
 
 ![Configure the .NET Portability Analyzer extension](./media/Figure3-3.png)
 
@@ -31,7 +35,7 @@ The extension supports Visual Studio 2017 and later. Once installed, you configu
 
 The analyzer produces a detailed report for each assembly. The report:
 
-* Describes how compatible each project is with a given target framework, such as .NET Core 3.1 or .NET Standard 2.0.
+* Describes how compatible each project is with a given target framework, such as .NET 7 or .NET Standard 2.0.
 * Helps teams assess the effort required to port a particular project to a particular target framework.
 
 The details of this analysis are covered in the next section.
@@ -58,7 +62,7 @@ Watch an overview of how to employ this approach in this [dotNetConf presentatio
 - Migrate apps to use new *.csproj* file format
 - Update internal NuGet dependencies to .NET Standard
 - Migrate apps to ASP.NET Core (targeting .NET Framework)
-- Update all apps to target .NET Core 3.1
+- Update all apps to target .NET 7
 
 When automating a large suite of apps, it helps significantly if they follow consistent coding guidelines and project organization. Automation efforts rely on this consistency to be effective. In addition to parsing and migrating project files, common code patterns can be migrated automatically. Some code pattern examples include differences in how controller actions are declared or how they return results.
 
@@ -90,7 +94,6 @@ You can use the .NET Portability Analyzer to determine how compatible existing l
 
 - [Porting from .NET Framework to .NET Core](../../core/porting/index.md)
 - [The .NET Portability Analyzer](../../standard/analyzers/portability-analyzer.md)
-- [Channel 9: A Brief Look at the .NET Portability Analyzer (Video)](https://channel9.msdn.com/Blogs/Seth-Juarez/A-Brief-Look-at-the-NET-Portability-Analyzer)
 - [2 Years, 200 Apps: A .NET Core Migration at Scale (Video)](https://www.youtube.com/watch?v=C-2haqb60No)
 
 >[!div class="step-by-step"]

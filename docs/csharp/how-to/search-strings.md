@@ -59,8 +59,6 @@ The following code uses regular expressions to validate the format of each strin
 | `^`     | matches the beginning of the string |
 | `\d{3}` | matches exactly 3 digit characters  |
 | `-`     | matches the '-' character           |
-| `\d{3}` | matches exactly 3 digit characters  |
-| `-`     | matches the '-' character           |
 | `\d{4}` | matches exactly 4 digit characters  |
 | `$`     | matches the end of the string       |
 
@@ -72,7 +70,6 @@ This single search pattern matches many valid strings. Regular expressions are b
 
 - [C# programming guide](../programming-guide/index.md)
 - [Strings](../programming-guide/strings/index.md)
-- [LINQ and strings](../programming-guide/concepts/linq/linq-and-strings.md)
 - <xref:System.Text.RegularExpressions.Regex?displayProperty=nameWithType>
 - [.NET regular expressions](../../standard/base-types/regular-expressions.md)
 - [Regular expression language - quick reference](../../standard/base-types/regular-expression-language-quick-reference.md)

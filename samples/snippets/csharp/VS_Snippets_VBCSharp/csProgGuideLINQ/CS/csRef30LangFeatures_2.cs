@@ -4,48 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace AutoImplMutable
-{
-    // Auto-impl props
-    //<snippet28>
-    // This class is mutable. Its data can be modified from
-    // outside the class.
-    class Customer
-    {
-        // Auto-implemented properties for trivial get and set
-        public double TotalPurchases { get; set; }
-        public string Name { get; set; }
-        public int CustomerId { get; set; }
-
-        // Constructor
-        public Customer(double purchases, string name, int id)
-        {
-            TotalPurchases = purchases;
-            Name = name;
-            CustomerId = id;
-        }
-
-        // Methods
-        public string GetContactInfo() { return "ContactInfo"; }
-        public string GetTransactionHistory() { return "History"; }
-
-        // .. Additional methods, events, etc.
-    }
-
-    class Program
-    {
-        static void Main()
-        {
-            // Intialize a new object.
-            Customer cust1 = new Customer(4987.63, "Northwind", 90108);
-
-            // Modify a property.
-            cust1.TotalPurchases += 499.99;
-        }
-    }
-    //</snippet28>
-}
-
 namespace Immutable
 {
 
@@ -346,25 +304,88 @@ namespace csrefLINQExamples
             //<snippet37>
             class ImplicitlyTypedArraySample
             {
-                static void Main()
-                {
-                    var a = new[] { 1, 10, 100, 1000 }; // int[]
-                    var b = new[] { "hello", null, "world" }; // string[]
-
-                    // single-dimension jagged array
-                    var c = new[]
-                    {
-                        new[]{1,2,3,4},
-                        new[]{5,6,7,8}
-                    };
-
-                    // jagged array of strings
-                    var d = new[]
-                    {
-                        new[]{"Luca", "Mads", "Luke", "Dinesh"},
-                        new[]{"Karen", "Suma", "Frances"}
-                    };
-                }
+            	static void Main()
+            	{
+            		var a = new[] { 1, 10, 100, 1000 }; // int[]
+            
+            		// Accessing array
+            		Console.WriteLine("First element: " + a[0]);
+            		Console.WriteLine("Second element: " + a[1]);
+            		Console.WriteLine("Third element: " + a[2]);
+            		Console.WriteLine("Fourth element: " + a[3]);
+            		/* Outputs
+            		First element: 1
+            		Second element: 10
+            		Third element: 100
+            		Fourth element: 1000
+            		*/
+            
+            		var b = new[] { "hello", null, "world" }; // string[]
+            
+            		// Accessing elements of an array using 'string.Join' method
+            		Console.WriteLine(string.Join(" ", b));
+            		/* Output
+            		hello  world
+            		*/
+            
+            		// single-dimension jagged array
+            		var c = new[]
+            		{
+            								new[]{1,2,3,4},
+            								new[]{5,6,7,8}
+            		};
+            		// Looping through the outer array
+            		for (int k = 0; k < c.Length; k++)
+            		{
+            			// Looping through each inner array
+            			for (int j = 0; j < c[k].Length; j++)
+            			{
+            				// Accessing each element and printing it to the console
+            				Console.WriteLine($"Element at c[{k}][{j}] is: {c[k][j]}");
+            			}
+            		}
+                     /* Outputs
+                     Element at c[0][0] is: 1
+                     Element at c[0][1] is: 2
+                     Element at c[0][2] is: 3
+                     Element at c[0][3] is: 4
+                     Element at c[1][0] is: 5
+                     Element at c[1][1] is: 6
+                     Element at c[1][2] is: 7
+                     Element at c[1][3] is: 8
+                     */
+            
+            		// jagged array of strings
+            		var d = new[]
+            		{
+            			new[]{"Luca", "Mads", "Luke", "Dinesh"},
+            			new[]{"Karen", "Suma", "Frances"}
+            		};
+            
+            		// Looping through the outer array
+            		int i = 0;
+            		foreach (var subArray in d)
+            		{
+            			// Looping through each inner array
+            			int j = 0;
+            			foreach (var element in subArray)
+            			{
+            				// Accessing each element and printing it to the console
+            				Console.WriteLine($"Element at d[{i}][{j}] is: {element}");
+            				j++;
+            			}
+            			i++;
+            		}
+            		/* Outputs
+            		Element at d[0][0] is: Luca
+            		Element at d[0][1] is: Mads
+            		Element at d[0][2] is: Luke
+            		Element at d[0][3] is: Dinesh
+            		Element at d[1][0] is: Karen
+            		Element at d[1][1] is: Suma
+            		Element at d[1][2] is: Frances
+            		*/
+            	}
             }
             //</snippet37>
 
@@ -389,7 +410,7 @@ namespace csrefLINQExamples
                 }
             }
 
-            //Object and collection intializers
+            //Object and collection initializers
 
             //<snippet46>
             // The following code consolidates examples from the topic.
@@ -660,49 +681,6 @@ namespace csrefLINQExamples
              */
             //</snippet64>
 
-            //<snippet65>
-            class Test
-            {
-                delegate void TestDelegate(string s);
-                static void M(string s)
-                {
-                    Console.WriteLine(s);
-                }
-
-                static void Main(string[] args)
-                {
-                    // Original delegate syntax required
-                    // initialization with a named method.
-                    TestDelegate testDelA = new TestDelegate(M);
-
-                    // C# 2.0: A delegate can be initialized with
-                    // inline code, called an "anonymous method." This
-                    // method takes a string as an input parameter.
-                    TestDelegate testDelB = delegate(string s) { Console.WriteLine(s); };
-
-                    // C# 3.0. A delegate can be initialized with
-                    // a lambda expression. The lambda also takes a string
-                    // as an input parameter (x). The type of x is inferred by the compiler.
-                    TestDelegate testDelC = (x) => { Console.WriteLine(x); };
-
-                    // Invoke the delegates.
-                    testDelA("Hello. My name is M and I write lines.");
-                    testDelB("That's nothing. I'm anonymous and ");
-                    testDelC("I'm a famous author.");
-
-                    // Keep console window open in debug mode.
-                    Console.WriteLine("Press any key to exit.");
-                    Console.ReadKey();
-                }
-            }
-            /* Output:
-                Hello. My name is M and I write lines.
-                That's nothing. I'm anonymous and
-                I'm a famous author.
-                Press any key to exit.
-             */
-            //</snippet65>
-
             //<snippet 66>
             class Test2
             {
@@ -735,7 +713,7 @@ namespace csrefLINQExamples
             //<snippet80>
             class MQ
             {
-                // QueryMethhod1 returns a query as its value.
+                // QueryMethod1 returns a query as its value.
                 IEnumerable<string> QueryMethod1(ref int[] ints)
                 {
                     var intsToStrings = from i in ints

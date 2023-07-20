@@ -43,23 +43,23 @@ issues:
       pass:
         - labels-add: ["source incompatible"]
 
-    # Checks breaking change version and adds a label
-    - check:
-        - type: query
-          value: "contains(Issue.body, '.NET 6 Preview') == `true` || contains(Issue.body, '.NET 6 RC') == `true` || contains(Issue.body, '.NET 6 GA') == `true`"
-      pass:
-        - labels-add: [":checkered_flag: Release .NET 6"]
-
     # Add to .NET 6 project if .NET 6 label added
     - check:
         - type: query
-          value: "length(Issue.labels[?name == ':checkered_flag: Release .NET 6']) != `0`"
+          value: "length(Issue.labels[?name == ':checkered_flag: Release: .NET 6']) != `0`"
       pass:
         - projects-add: [132]
 
   opened:
     # New issue opened, add Not Triaged  
     - labels-add: [":watch: Not Triaged"]
+
+    # Dependabot opened issue, label it
+    - check:
+        - type: query
+          value: "Issue.user.login == 'dependabot'"
+      pass:
+        - labels-add: ["dependencies"]
 
     # If breaking change issue metadata, add labels
     - check:
@@ -80,6 +80,13 @@ issues:
     # Issue closed, remove in-progress and not triaged labels
     - labels-remove: ["in-progress", ":watch: Not Triaged"]
 
+    # Check if the issue was closed by the user who opened it
+    - check:
+        - type: query
+          value: "Issue.user.id == Issue.closed_by.id"
+      pass:
+        - labels-add: ["resolved-by-customer"]
+
 pull_request:
 
   reopened: opened
@@ -96,6 +103,11 @@ pull_request:
         - files-changed:
             # csharplang
             - path: "(?i).*_csharplang.*"
+              run:
+                - labels-add: ["dotnet-csharp/prod", "csharp-spec/tech"]
+
+            # csharpstandard
+            - path: "(?i).*_csharpstandard.*"
               run:
                 - labels-add: ["dotnet-csharp/prod", "csharp-spec/tech"]
 
@@ -209,7 +221,7 @@ pull_request:
             - path: "(?i).*docs\/csharp\/programming-guide\/concepts\/expression-trees.*"
               run:
                 - labels-add: ["dotnet-csharp/prod", "csharp-advanced-concepts/tech"]
-            - path: "(?i).*docs\/csharp\/programming-guide\/concepts\/async.*"
+            - path: "(?i).*docs\/csharp\/asynchronous-programming\/.*"
               run:
                 - labels-add: ["dotnet-csharp/prod", "csharp-async/tech"]
             - path: "(?i).*docs\/csharp\/programming-guide\/concepts\/linq.*"
@@ -283,6 +295,12 @@ pull_request:
             - path: "(?i).*docs\/framework\/network-programming.*"
               run:
                 - labels-add: [ "dotnet-framework/prod", "dotnet-networking/tech" ]
+            - path: "(?i).*docs\/fundamentals\/networking.*"
+              run:
+                - labels-add: [ "dotnet-fundamentals/prod", "dotnet-networking/tech" ]
+            - path: "(?i).*docs\/core\/extensions\/http.*"
+              run:
+                - labels-add: [ "dotnet-fundamentals/prod", "dotnet-networking/tech" ]
             - path: "(?i).*docs\/framework\/wcf.*"
               run:
                 - labels-add: [ "dotnet-framework/prod", "dotnet-wcf/tech" ]
@@ -355,7 +373,7 @@ pull_request:
     # Add to .NET 6 project if .NET 6 label added
     - check:
         - type: query
-          value: "length(Issue.labels[?name == ':checkered_flag: Release .NET 6']) != `0`"
+          value: "length(Issue.labels[?name == ':checkered_flag: Release: .NET 6']) != `0`"
       pass:
         - projects-add: [132]
 

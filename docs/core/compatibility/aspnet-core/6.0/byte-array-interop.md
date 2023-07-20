@@ -2,7 +2,6 @@
 title: "Breaking change: Blazor: Byte Array Interop"
 description: "Learn about the breaking change in ASP.NET Core 6.0 titled Blazor: Byte Array Interop"
 no-loc: [ Blazor ]
-ms.author: taparik
 ms.date: 06/21/2021
 ---
 # Blazor: Byte-array interop
@@ -11,7 +10,7 @@ Blazor now supports optimized byte-array interop, which avoids encoding and deco
 
 ## Version introduced
 
-ASP.NET Core 6.0 Preview 6
+ASP.NET Core 6.0
 
 ## Receive byte array in JavaScript from .NET
 

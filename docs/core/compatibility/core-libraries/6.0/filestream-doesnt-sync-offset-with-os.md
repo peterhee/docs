@@ -1,7 +1,7 @@
 ---
 title: ".NET 6 breaking change: FileStream doesn't synchronize file offset with OS"
 description: Learn about the .NET 6 breaking change in core .NET libraries where FileStream doesn't synchronize the file offset with the operating system.
-ms.date: 05/05/2021
+ms.date: 10/04/2022
 ---
 # FileStream no longer synchronizes file offset with OS
 
@@ -36,14 +36,14 @@ using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrit
 
 ## Version introduced
 
-6.0 Preview 4
+.NET 6
 
 ## Reason for change
 
 This change was introduced to improve the performance of asynchronous reads and writes and to address the following issues:
 
-- [Win32 FileStream will issue a seek on every ReadAsync call](https://github.com/dotnet/runtime/issue/16354)
-- [FileStream.Windows useAsync WriteAsync calls blocking APIs](https://github.com/dotnet/runtime/issue/25905)
+- [Win32 FileStream will issue a seek on every ReadAsync call](https://github.com/dotnet/runtime/issues/16354)
+- [FileStream.Windows useAsync WriteAsync calls blocking APIs](https://github.com/dotnet/runtime/issues/25905)
 
 With this change, <xref:System.IO.FileStream.ReadAsync%2A> operations are up to two times faster, and <xref:System.IO.FileStream.WriteAsync%2A> operations are up to five times faster.
 
@@ -53,7 +53,7 @@ With this change, <xref:System.IO.FileStream.ReadAsync%2A> operations are up to 
 
 - To enable the .NET 5 behavior in .NET 6, specify an `AppContext` switch or an environment variable. By setting the switch to `true`, you opt out of all performance improvements made to `FileStream` in .NET 6.
 
-  ```xml
+  ```json
   {
       "configProperties": {
           "System.IO.UseNet5CompatFileStream": true
@@ -65,6 +65,9 @@ With this change, <xref:System.IO.FileStream.ReadAsync%2A> operations are up to 
   set DOTNET_SYSTEM_IO_USENET5COMPATFILESTREAM=1
   ```
 
+  > [!NOTE]
+  > This switch is only available in .NET 6. It was [removed in .NET 7](../7.0/filestream-compat-switch.md).
+
 ## Affected APIs
 
 None.
@@ -73,15 +76,3 @@ None.
 
 - [SetFilePointer function](/windows/win32/api/fileapi/nf-fileapi-setfilepointer)
 - [SetFilePointerEx function](/windows/win32/api/fileapi/nf-fileapi-setfilepointerex)
-
-<!--
-
-### Category
-
-- Core .NET libraries
-
-### Affected APIS
-
-Not detectible via API analysis.
-
--->

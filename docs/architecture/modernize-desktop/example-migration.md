@@ -1,18 +1,30 @@
 ---
-title: Example of migrating to .NET 5
-description: Showing how to migrate a sample applications targeting  .NET Framework to .NET 5.
-ms.date: 01/19/2021
+title: Example of migrating to the latest .NET
+description: Learn how to migrate your applications from .NET 5, .NET Core, and .NET Framework to .NET 7.
+ms.date: 10/25/2021
 ---
 
-# Example of migrating to .NET
+# Example of migrating to the latest .NET
 
-In this chapter, we present practical guidelines to help you perform a migration of your existing application from .NET Framework to .NET.
+[!INCLUDE [download-alert](includes/download-alert.md)]
 
-We present a well-structured process you can follow and the most important things to consider on each step.
+In this chapter, we'll show how to migrate your applications to the latest version of .NET. You can migrate to .NET 7 from .NET Framework, .NET Core, or .NET 5. We'll introduce a tool that can do all the work for you in most cases. If your application has special cases or complicated dependencies, we'll also show how to do the whole migration process by hand. Additionally, we'll cover the most common issues and challenges you can face when migrating an existing application from .NET Framework to .NET.
 
-We then document a step-by-step migration process for a sample desktop application, both from WinForms and WPF versions.
+## Migrating from .NET Core or .NET 5
 
-## Migration process overview
+Updating your applications to target the latest version of .NET is easy if you already are on .NET Core or .NET 5. If this is the case, then in Visual Studio, simply right-click on your project in **Solution Explorer** and choose **Properties**. Under **Application** > **General** > **Target framework**, choose .NET 7.0. Save and rebuild your application. You're done! Your app now runs on the latest version of .NET. In the future when new versions become available, you can upgrade in the same way.
+
+![Migrating to .NET 7.0 from .NET Core or .NET 5](./media/example-migration-core/migrate-in-settings.png)
+
+## Migrating from .NET Framework
+
+Migrating from .NET Framework is a more complicated process because there are more differences between .NET Framework and other platforms that were built on top of .NET Core. But the good news is that there's a tool that will do all the work for you in most cases.
+
+### Migrating with a tool
+
+The [Upgrade Assistant](https://dotnet.microsoft.com/platform/upgrade-assistant) is a migration tool. Using it is easy and there are step-by-step instructions available on the [.NET website](https://dotnet.microsoft.com/platform/upgrade-assistant/tutorial/intro). In this chapter, we'll look at what is happening behind the scenes and how to port your application by hand. When the Upgrade Assistant is unable to migrate your application, you'll learn the underlying mechanics so that you might be able to migrate manually.
+
+### Migrating by hand
 
 The migration process consists of four sequential steps:
 
@@ -34,7 +46,7 @@ So, you need to transition from one format to another. You can do the update man
 
 #### Verify every dependency compatibility in .NET
 
-Once you've migrated the package references, you must check each reference for compatibility. You can explore the dependencies of each NuGet package your application is using on [nuget.org](https://www.nuget.org/). If the package has .NET Standard dependencies, then it's going to work on .NET 5.0 because .NET [supports](../../standard/net-standard.md#net-implementation-support) all versions of .NET Standard. The following image shows the dependencies for the `Castle.Windsor` package:
+Once you've migrated the package references, you must check each reference for compatibility. You can explore the dependencies of each NuGet package your application is using on [nuget.org](https://www.nuget.org/). If the package has .NET Standard dependencies, then it's going to work on .NET 7 because .NET [supports](../../standard/net-standard.md#net-implementation-support) all versions of .NET Standard. The following image shows the dependencies for the `Castle.Windsor` package:
 
 ![Screenshot of the NuGet dependencies for the Castle.Windsor package](./media/example-migration-core/nuget-dependencies.png)
 
@@ -42,38 +54,19 @@ To check the package compatibility, you can use the tool <https://fuget.org> tha
 
 Maybe the project is referencing older package versions that don't support .NET, but you might find newer versions that do support it. So, updating packages to newer versions is generally a good recommendation. However, you should consider that updating the package version can introduce some breaking changes that would force you to update your code.
 
-What happens if you don't find a compatible version? What if you just don't want to update the version of a package because of these breaking changes? Don't worry because it's possible to depend on .NET Framework packages from a .NET application. Don't forget to test it extensively because it can cause run-time errors if the external package calls an API that isn't available on .NET. This is great for when you're using an old package that isn't going to be updated and you can just retarget to work on the .NET.
+What happens if you don't find a compatible version? What if you just don't want to update the version of a package because of these breaking changes? Don't worry because it's possible to depend on .NET Framework packages from a .NET application. Don't forget to test it extensively because it can cause run-time errors if the external package calls an API that isn't available on .NET. This is great for when you're using an old package that isn't going to be updated and you can just retarget to work on .NET.
 
 #### Check for API compatibility
 
-Since the API surface in .NET Framework and .NET is similar but not identical, you must check which APIs are available on .NET and which aren't. You can use the .NET Portability Analyzer tool to surface APIs used that aren't present on .NET. It looks at the binary level of your app, extracts all the APIs that are called, and then lists which APIs aren't available on your target framework (.NET 5.0 in this case).
+Since the API surface in .NET Framework and .NET is similar but not identical, you must check which APIs are available on .NET and which aren't. You can use the .NET Portability Analyzer tool to surface APIs used that aren't present on .NET. It looks at the binary level of your app, extracts all the APIs that are called, and then lists which APIs aren't available on your target framework (.NET 7 in this case).
 
 You can find more information about this tool at:
 
-<https://docs.microsoft.com/dotnet/standard/analyzers/portability-analyzer>
+[https://learn.microsoft.com/dotnet/standard/analyzers/portability-analyzer](../../standard/analyzers/portability-analyzer.md)
 
 An interesting aspect of this tool is that it only surfaces the differences from your own code and not code from external packages, which you can't change. Remember you should have updated most of these packages to make them work with .NET.
 
-### Migrate with Try Convert tool
-
-The [Try Convert](https://github.com/dotnet/try-convert/releases) tool is a great way to migrate a project. It's a global tool that attempts to upgrade your project file from the old style to the new SDK style, and retargets applicable projects to .NET 5. Once installed, you can run the following commands:
-
-```dotnetcli
-try-convert -p "<path to your project file>"
-```
-
-Or:
-
-```dotnetcli
-try-convert -w "<path to your solution>"
-```
-
-> [!NOTE]
-> The try-convert tool is run automatically as part of the [.NET Upgrade Assistant tool](https://aka.ms/dotnet-upgrade-assistant). Consider running the full Upgrade Assistant and not just Try Convert.
-
-After the tool attempts the conversion, reload your files in Visual Studio to run and test. There's a possibility that Try Convert won't be able to perform the conversion due to the specifics of your project. In that case, you can refer the below steps.
-
-#### Migrate manually
+#### Migrate
 
 1. Create the new .NET project
 
@@ -109,13 +102,13 @@ Update the versions of the packages you've found to be compatible, as shown in t
 
 #### Microsoft.Windows.Compatibility
 
-If your application depends on APIs that aren't available on .NET, such as Registry, ACLs, or WCF, you have to include a reference to the `Microsoft.Windows.Compatibility` package to add these Windows-specific APIs. They work on .NET but aren't included as they aren't cross-platform.
+If your application depends on APIs that aren't available on .NET, such as Registry or ACLs, you have to include a reference to the `Microsoft.Windows.Compatibility` package to add these Windows-specific APIs. They work on .NET but aren't included as they aren't cross-platform.
 
-There's a tool called API Analyzer (<https://docs.microsoft.com/dotnet/standard/analyzers/api-analyzer>) that helps you identify APIs that aren't compatible with your code.
+There's a tool called Platform compatibility analyzer ([https://learn.microsoft.com/dotnet/standard/analyzers/platform-compat-analyzer](../../standard/analyzers/platform-compat-analyzer.md)) that helps you identify APIs that aren't compatible with your code.
 
 #### Use \#if directives
 
-If you need different execution paths when targeting .NET Framework and .NET, you should use compilation constants. Add some \#if directives to your code to keep the same code base for both targets.
+If you need different execution paths when targeting .NET Framework and .NET, you should use compilation constants. Add some \#if directives to your code to keep the same codebase for both targets.
 
 #### Technologies not available on .NET
 
@@ -124,7 +117,6 @@ Some technologies aren't available on .NET, such as:
 * AppDomains
 * Remoting
 * Code Access Security
-* WCF Server
 * Windows Workflow
 
 That's why you need to find a replacement for these technologies if you're using them in your application. For more information, see the [.NET Framework technologies unavailable on .NET Core and .NET 5+](../../core/porting/net-framework-tech-unavailable.md) article.
@@ -153,8 +145,7 @@ You can use compatibility analyzers to let you identify APIs and code patterns i
 
 To showcase a complete migration process of a Windows Forms application, we've chosen to migrate the eShop sample application available at <https://github.com/dotnet-architecture/eShopModernizing/tree/master/eShopLegacyNTier/src/eShopWinForms>. You can find the complete result of the migration at <https://github.com/dotnet-architecture/eShopModernizing/tree/master/eShopModernizedNTier/src/eShopWinForms>.
 
-This application shows a product catalog and allows the user to navigate, filter, and search for products. From an architecture point of view, the app relies on an external WCF service that serves as a façade to a back-end
-database.
+This application shows a product catalog and allows the user to navigate, filter, and search for products. From an architecture point of view, the app relies on an external WCF service that serves as a façade to a back-end database.
 
 You can see the main application window in the following picture:
 
@@ -164,24 +155,24 @@ If you open the *.csproj* project file, you can see something like this:
 
 ![Screenshot of the csproj file contents](./media/example-migration-core/csproj-file.png)
 
-As previously mentioned, .NET project has a more compact style and you need to migrate the project structure to the new .NET SDK style.
+As previously mentioned, a .NET project has a more compact style and you need to migrate the project structure to the new .NET SDK style.
 
-In the Solution Explorer, right click on the Windows Forms project and select **Unload Project** > **Edit**.
+In Solution Explorer, right-click on the Windows Forms project and select **Unload Project** > **Edit**.
 
-Now you can update the .csproj file. You'll delete the entire content and replace it with the following code:
+Now you can update the .csproj file. You'll delete the entire contents and replace it with the following code:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
 </Project>
 ```
 
-Save and reload the project. You're now done updating the project file and the project is targeting the .NET.
+Save and reload the project. You're now done updating the project file and the project is targeting .NET 7.
 
 If you compile the project at this point, you'll find some errors related to the WCF client reference. Since this code is autogenerated, you must regenerate it to target .NET.
 
@@ -229,7 +220,7 @@ to
 string image_name = Environment.CurrentDirectory + "\\..\\..\\..\\Assets\\Images\\Catalog\\" + catalogItems.Picturefilename;
 ```
 
-After this change, you can check that the application launches and runs as expected on .NET Core.
+After this change, you can check that the application launches and runs as expected on .NET 7.
 
 ## Migrating a WPF application
 
@@ -247,7 +238,7 @@ In this case, delete all the content of the *.csproj* file and replace it with t
  <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net5.0-windows</TargetFramework>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <UseWpf>true</UseWpf>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
   </PropertyGroup>
@@ -266,7 +257,7 @@ Since you've deleted all the *.csproj* contents, you've lost a project reference
 <ItemGroup>
 ```
 
-You can also let Visual Studio help you by right-clicking on the **Dependencies** node and selecting **Add Project Reference**. Select the project from the solution and click **OK**:
+You can also let Visual Studio help you by right-clicking on the **Dependencies** node and selecting **Add Project Reference**. Select the project from the solution and select **OK**:
 
 ![Screenshot of the Reference Manager dialog with the eShop.SqlProvider project selected](./media/example-migration-core/reference-manager.png)
 

@@ -3,7 +3,7 @@ title: 'Tutorial: Predict prices using regression with Model Builder'
 description: This tutorial illustrates how to build a regression model using ML.NET Model Builder to predict prices, specifically, New York City taxi fares.
 author: luisquintanilla
 ms.author: luquinta
-ms.date: 07/30/2021
+ms.date: 09/20/2021
 ms.topic: tutorial
 ms.custom: mvc, mlnet-tooling
 #Customer intent: As a non-developer, I want to use Model Builder to automatically generate a model to predict prices using Model Builder.
@@ -25,9 +25,6 @@ In this tutorial, you learn how to:
 > - Train the model
 > - Evaluate the model
 > - Use the model for predictions
-
-> [!NOTE]
-> Model Builder is currently in Preview.
 
 ## Pre-requisites
 
@@ -71,12 +68,12 @@ The `label` is the column you want to predict. When performing a regression task
 
 When first adding Model Builder to the solution it will prompt you to create an `mbconfig` file. The `mbconfig` file keeps track of everything you do in Model Builder to allow you to reopen the session.
 
-1. In **Solution Explorer**, right-click the *TaxiFarePrediction* project, and select **Add** > **Machine Learning**.
+1. In **Solution Explorer**, right-click the *TaxiFarePrediction* project, and select **Add** > **Machine Learning Model...**.
 1. Name the `mbconfig` project **TaxiFarePrediction**, and click the **Add** button.
 
 ## Choose a scenario
 
-![Model Builder wizard in Visual Studio](../media/model-builder-screen.png)
+:::image type="content" source="../media/model-builder-scenarios-2-0.png" alt-text="Model Builder Scenario Screen" lightbox="../media/model-builder-scenarios-2-0.png":::
 
 To train your model, you need to select from the list of available machine learning scenarios provided by Model Builder. In this case, the scenario is `Value prediction`.
 
@@ -94,7 +91,7 @@ Model Builder accepts data from two sources, a SQL Server database or a local fi
 
 1. In the data step of the Model Builder tool, select *File* from the data source type selection.
 1. Select the **Browse** button next to the text box and use File Explorer to browse and select the *taxi-fare-test.csv* in the *Data* directory
-1. Choose *fare_amount* in the *Column to Predict (Label)* dropdown.
+1. Choose *fare_amount* in the **Column to predict (Label)** dropdown.
 1. Click the **Advanced data options** link.
 1. In the **Column settings** tab, select the **Purpose** dropdown for the *trip_time_in_secs* column, and select **Ignore** to exclude it as a feature during training. Click the **Save** button to close the dialog.
 1. Click the **Next step** button.

@@ -1,7 +1,7 @@
 ---
 title: ".NET 6 breaking change: FileStream.Position updated after ReadAsync or WriteAsync completion"
 description: Learn about the .NET 6 breaking change in core .NET libraries where FileStream.Position is updated after ReadAsync or WriteAsync completion.
-ms.date: 05/05/2021
+ms.date: 10/04/2022
 ---
 # FileStream.Position updates after ReadAsync or WriteAsync completes
 
@@ -37,7 +37,7 @@ using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrit
 
 ## Version introduced
 
-6.0 Preview 4
+.NET 6
 
 ## Reason for change
 
@@ -45,8 +45,8 @@ using (FileStream fs = new FileStream(path, FileMode.Create, FileAccess.ReadWrit
 
 This change was introduced to allow for 100% asynchronous file I/O with <xref:System.IO.FileStream> and to fix the following issues:
 
-- [FileStream.FlushAsync ends up doing synchronous writes](https://github.com/dotnet/runtime/issue/27643)
-- [Win32 FileStream turns async reads into sync reads](https://github.com/dotnet/runtime/issue/16341)
+- [FileStream.FlushAsync ends up doing synchronous writes](https://github.com/dotnet/runtime/issues/27643)
+- [Win32 FileStream turns async reads into sync reads](https://github.com/dotnet/runtime/issues/16341)
 
 Now, when buffering is enabled (that is, the `bufferSize` argument that's passed to the [FileStream constructor](xref:System.IO.FileStream.%23ctor%2A) is greater than 1), every <xref:System.IO.FileStream.ReadAsync%2A> and <xref:System.IO.FileStream.WriteAsync%2A> operation is serialized.
 
@@ -56,7 +56,7 @@ Now, when buffering is enabled (that is, the `bufferSize` argument that's passed
 
 - To enable the .NET 5 behavior in .NET 6, specify an `AppContext` switch or an environment variable. By setting the switch to `true`, you opt out of all performance improvements made to `FileStream` in .NET 6.
 
-  ```xml
+  ```json
   {
       "configProperties": {
           "System.IO.UseNet5CompatFileStream": true
@@ -68,18 +68,9 @@ Now, when buffering is enabled (that is, the `bufferSize` argument that's passed
   set DOTNET_SYSTEM_IO_USENET5COMPATFILESTREAM=1
   ```
 
+  > [!NOTE]
+  > This switch is only available in .NET 6. It was [removed in .NET 7](../7.0/filestream-compat-switch.md).
+
 ## Affected APIs
 
 - <xref:System.IO.FileStream.Position?displayProperty=fullName>
-
-<!--
-
-### Category
-
-- Core .NET libraries
-
-### Affected APIs
-
-- `P:System.IO.FileStream.Position`
-
--->

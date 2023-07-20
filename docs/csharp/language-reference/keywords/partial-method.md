@@ -16,6 +16,8 @@ A partial method has its signature defined in one part of a partial type, and it
 
 - Signatures in both parts of the partial type must match.
 
+The `partial` keyword isn't allowed on constructors, finalizers, overloaded operators, property declarations, or event declarations.
+
 A partial method isn't required to have an implementation in the following cases:
 
 - It doesn't have any accessibility modifiers (including the default [private](../../language-reference/keywords/private.md)).
@@ -35,7 +37,7 @@ The following example shows a partial method defined in two parts of a partial c
 Partial methods can also be useful in combination with source generators. For example a regex could be defined using the following pattern:
 
 ```csharp
-[RegexGenerated("(dog|cat|fish)")]
+[GeneratedRegex("(dog|cat|fish)")]
 partial bool IsPetMatch(string input);
 ```
 
